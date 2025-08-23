@@ -63,8 +63,19 @@
     }
 
     section[id] {
-      scroll-margin-top: 84px;
+      scroll-margin-top: 80px;
       /* hauteur approximative de ta nav */
+    }
+
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+
+    [data-animate].visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     body {
@@ -93,6 +104,10 @@
     .container {
       width: min(100% - 2rem, var(--maxw));
       margin-inline: auto;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
     }
 
     /* =========================
@@ -187,7 +202,7 @@
 
     /* Animation en croix */
     .burger[aria-expanded="true"] span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
+      transform: translateY(15px) rotate(45deg);
     }
 
     .burger[aria-expanded="true"] span:nth-child(2) {
@@ -195,7 +210,7 @@
     }
 
     .burger[aria-expanded="true"] span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+      transform: translateY(-15px) rotate(-45deg);
     }
 
     /* Menu mobile */
@@ -271,8 +286,9 @@
     }
 
     .hero-inner {
+      transform: translateY(calc(var(--scroll, 0) * 0.1));
+      transition: transform .2s linear;
       text-align: center;
-      padding: 5rem 1rem;
     }
 
     .kicker {
@@ -312,6 +328,30 @@
     .cta:hover {
       transform: translateY(-2px);
       filter: brightness(1.05);
+    }
+
+    .cta,
+    .btn.primary {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::after,
+    .btn.primary::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s;
+    }
+
+    .cta:hover::after,
+    .btn.primary:hover::after {
+      left: 100%;
     }
 
     /* =========================
@@ -396,6 +436,15 @@
       filter: contrast(1.05) saturate(1.02);
     }
 
+    .card:hover .thumb {
+      transform: scale(1.05);
+      transition: transform 0.6s var(--ease);
+    }
+
+    .card:hover {
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.2);
+    }
+
     .card .body {
       padding: 1rem;
     }
@@ -438,12 +487,12 @@
 
     @keyframes pop {
       from {
-        transform: translateY(16px);
+        transform: translateY(16px) scale(0.95);
         opacity: 0;
       }
 
       to {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
       }
     }
@@ -615,6 +664,22 @@
       /* animation du logo */
     }
 
+    .chip.soundcloud:hover {
+      color: #ff7733;
+    }
+
+    .chip.youtube:hover {
+      color: #ff3333;
+    }
+
+    .chip.linkedin:hover {
+      color: #00a0dc;
+    }
+
+    .chip.instagram:hover {
+      color: #fd1d77;
+    }
+
     /* Couleurs spécifiques par réseau social */
     .chip.soundcloud {
       color: #FF5500;
@@ -643,10 +708,41 @@
         scroll-behavior: auto;
       }
     }
+
+    /* Bouton retour en haut */
+    #toTop {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: var(--bg);
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .3s var(--ease), transform .3s var(--ease);
+      z-index: 99;
+    }
+
+    #toTop.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #toTop:active {
+      transform: rotate(360deg) scale(0.9);
+      transition: transform 0.6s ease;
+    }
   </style>
 </head>
 
 <body>
+
   <!-- =========================
        🔝 NAVIGATION
        Remplace [Ton Nom] par ton nom/prénom.
@@ -704,8 +800,7 @@
         <p class="meta">Étudiant en bachelor réalisation à l’EICAR</p>
         <p>Passionné par la mise en scène et la direction d’acteurs, je développe des projets courts qui explorent le
           regard, le tempo et l’émotion. Je m’intéresse à la narration visuelle et au travail d’équipe sur le plateau.
-          Je m'interesse aussi a la musique et au sound design.</p>
-        </p>
+          Je m’intéresse aussi a la musique et au sound design.</p>
         <p>Compétences clés : découpage, direction d’acteurs, collaboration avec chef op/son, gestion de tournage léger.
         </p>
         <div class="actions" style="margin-top: .8rem">
@@ -728,12 +823,12 @@
     <div class="grid" id="cards">
       <!-- 📌 COPIE/EDITE ce bloc .card pour ajouter un projet -->
       <article class="card" data-title="DreamScape" data-role="Artiste / Interprète"
-        data-synopsis="DreamScape est directement inspiré du groupe Tame Impala, j'ai essayer de réaliser un son avec la même ambiance par pur passions !"
+        data-synopsis="DreamScape est directement inspiré du groupe Tame Impala, j'ai essayer de réaliser un son avec la même ambiance par pure passion !"
         data-link="https://soundcloud.com/p1cs0u/dreamscape" aria-label="Ouvrir les détails du projet DreamScape">
         <img class="thumb" alt="Affiche du projet DreamScape, musique psychédélique" loading="lazy" src="P1CS0U.svg" />
         <div class="body">
           <h3>DreamScape</h3>
-          <p>Musique — psychadelique</p>
+          <p>Musique — psychédélique</p>
           <button class="btn small more-btn">En savoir plus</button>
         </div>
       </article>
@@ -768,26 +863,49 @@
        ✉️ CONTACT
        ========================= -->
   <section class="container contact" id="contact" aria-label="Contact">
-    <div class="panel">
-      <h2>Contact</h2>
-      <p class="meta">Envie de collaborer ou d’échanger ? Écris-moi.</p>
-      <form id="contactForm" aria-label="Formulaire de contact">
-        <div>
-          <label for="name">Nom</label>
-          <input id="name" name="name" type="text" placeholder="Votre nom" required />
-        </div>
-        <div>
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="votre@email.com" required />
-        </div>
-        <div>
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Votre message…" required></textarea>
-        </div>
-        <button type="submit" class="btn primary">Envoyer</button>
-      </form>
+    <div class="about" style="align-items: stretch;">
+      <!-- Texte d’introduction -->
+      <div class="panel" style="display:flex;flex-direction:column;justify-content:center;">
+        <h2>Contact</h2>
+        <p class="meta">Envie de collaborer, d’échanger sur un projet ou simplement de discuter cinéma ?</p>
+        <p>Écrivez-moi et je vous répondrai rapidement. Que ce soit pour une réalisation, une collaboration musicale ou
+          un projet créatif, je suis toujours ouvert aux nouvelles idées.</p>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="panel">
+        <form id="contactForm" aria-label="Formulaire de contact">
+          <div>
+            <label for="name">Nom</label>
+            <div style="position:relative;">
+              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6;">👤</span>
+              <input id="name" name="name" type="text" placeholder="Votre nom" required style="padding-left:2.2rem;" />
+            </div>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <div style="position:relative;">
+              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6;">📧</span>
+              <input id="email" name="email" type="email" placeholder="votre@email.com" required
+                style="padding-left:2.2rem;" />
+            </div>
+          </div>
+          <div>
+            <label for="message">Message</label>
+            <div style="position:relative;">
+              <span style="position:absolute;left:12px;top:16px;opacity:.6;">💬</span>
+              <textarea id="message" name="message" placeholder="Votre message…" required
+                style="padding-left:2.2rem;"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn primary">✉️ Envoyer le message</button>
+          <p id="formMessage" class="meta" style="margin-top:.6rem;color:var(--accent);display:none;">Merci ! Votre
+            message a bien été envoyé.</p>
+        </form>
+      </div>
     </div>
   </section>
+
 
   <!-- =========================
        ⬛ FOOTER
@@ -882,7 +1000,7 @@
 
     function highlightNav() {
       let idx = 0;
-      const fromTop = window.scrollY + 120;
+      const fromTop = window.scrollY + window.innerHeight / 3; // plus fluide
       for (let i = 0; i < sections.length; i++) {
         const sec = sections[i];
         if (sec.offsetTop <= fromTop) idx = i;
@@ -958,6 +1076,17 @@
       e.target.reset();
     });
 
+    // Formulaire de contact — message inline
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('name').value || '').trim();
+      const messageEl = document.getElementById('formMessage');
+      messageEl.textContent = `Merci${name ? `, ${name}` : ''} ! Votre message a bien été envoyé.`;
+      messageEl.style.display = 'block';
+      e.target.reset();
+    });
+
+
     // --- Lazy-load images automatiquement ---
     document.querySelectorAll('img[src]').forEach(img => {
       if ((img.getAttribute('src') || '').trim() !== '') {
@@ -966,7 +1095,33 @@
       }
     });
 
+    // --- Scroll to top button ---
+    const toTopBtn = document.getElementById('toTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        toTopBtn.classList.add('show');
+      } else {
+        toTopBtn.classList.remove('show');
+      }
+    });
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
   </script>
+
+  <button id="toTop" aria-label="Retour en haut">↑</button>
+
 </body>
+
+</html>
 
 </html>
