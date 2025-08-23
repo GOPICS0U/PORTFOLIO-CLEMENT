@@ -74,9 +74,30 @@
       transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
     }
 
+    [data-animate].fade-up {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+
+    [data-animate].fade-left {
+      transform: translateX(-30px);
+      opacity: 0;
+    }
+
+    [data-animate].fade-right {
+      transform: translateX(30px);
+      opacity: 0;
+    }
+
+    [data-animate].fade-scale {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
     [data-animate].visible {
+      transform: translate(0, 0) scale(1);
       opacity: 1;
-      transform: translateY(0);
+      transition: all 0.8s var(--ease);
     }
 
     body {
@@ -162,9 +183,17 @@
       background: rgba(255, 255, 255, .06);
     }
 
-    nav a.active {
-      color: var(--bg);
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    nav a.active::after {
+      content: "";
+      display: block;
+      height: 3px;
+      background: var(--accent);
+      width: 0;
+      transition: width 0.4s ease;
+    }
+
+    nav a.active::after {
+      width: 100%;
     }
 
     /* Bouton burger (desktop: caché) */
@@ -355,6 +384,20 @@
       left: 100%;
     }
 
+    .typed span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: typeIn 0.5s forwards;
+    }
+
+    @keyframes typeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* =========================
        👤 À PROPOS
        ========================= */
@@ -427,8 +470,8 @@
     }
 
     .card:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: var(--shadow);
+      transform: translateY(-5px) scale(1.03) rotateZ(1deg);
+      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.25);
     }
 
     .card .thumb {
@@ -437,9 +480,8 @@
       filter: contrast(1.05) saturate(1.02);
     }
 
-    .card:hover .thumb {
-      transform: scale(1.05);
-      transition: transform 0.6s var(--ease);
+    .card .thumb:hover {
+      transform: scale(1.08) rotateZ(0.5deg);
     }
 
     .card:hover {
@@ -572,14 +614,24 @@
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      background: #17171b;
+      transform: translateY(-3px) scale(1.05);
+      animation: btnGlow 0.6s infinite alternate;
     }
 
     .btn.primary {
       border: none;
       background: linear-gradient(120deg, var(--accent), var(--accent-2));
       color: var(--bg);
+    }
+
+    @keyframes btnGlow {
+      0% {
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+      }
+
+      100% {
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      }
     }
 
     /* =========================
@@ -710,6 +762,56 @@
       }
     }
 
+    /* Animation de rebond + déformation */
+    @keyframes bounceUp {
+      0% {
+        transform: translateY(0) scale(1, 1);
+      }
+
+      30% {
+        transform: translateY(-15px) scale(1.2, 0.8);
+        /* s'étire horizontalement, écrase verticalement */
+      }
+
+      50% {
+        transform: translateY(-25px) scale(0.9, 1.1);
+        /* inverse pour effet ressort */
+      }
+
+      70% {
+        transform: translateY(-10px) scale(1.05, 0.95);
+      }
+
+      100% {
+        transform: translateY(0) scale(1, 1);
+      }
+    }
+
+    #toTop.show {
+      opacity: 1;
+      pointer-events: auto;
+      /* supprime l'ancienne animation float */
+      transform: translateY(0);
+    }
+
+    /* Déclenche le rebond quand on clique ou scroll vers le haut */
+    #toTop.bounce {
+      animation: bounceUp 0.6s ease-out forwards;
+    }
+
+    /* Animation au survol */
+    #toTop:hover {
+      transform: translateY(-4px) scale(1.1);
+      filter: brightness(1.1);
+    }
+
+    /* Animation au clic */
+    #toTop:active {
+      transform: translateY(-15px) scale(1.2, 0.8);
+      /* léger effet dynamique au clic */
+      transition: transform 0.2s ease;
+    }
+
     /* Bouton retour en haut */
     #toTop {
       position: fixed;
@@ -729,17 +831,6 @@
       pointer-events: none;
       transition: opacity 0.4s ease, transform 0.3s ease;
       z-index: 9999;
-    }
-
-    #toTop.show {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    #toTop:active {
-      transform: rotate(360deg) scale(0.9);
-      transition: transform 0.6s ease;
     }
   </style>
 </head>
@@ -783,7 +874,7 @@
       <h1>Bonjour, je suis <span style="color:var(--accent)">Clément</span><br />Étudiant en réalisation à l’EICAR
       </h1>
       <p class="subtitle">Je raconte des histoires en images et en émotions. Mon travail explore la narration visuelle,
-        le rythme et la direction d’acteurs, et part ailleurs artiste et compositeur.</p>
+        le rythme et la direction d’acteurs, et je suis également artiste et compositeur.</p>
       <a class="cta" href="#projets" aria-label="Voir mes projets">🎬 Voir mes projets</a>
     </div>
   </section>
@@ -1132,16 +1223,28 @@
 
       // --- Scroll to top button ---
       const toTopBtn = document.getElementById('toTop');
+
       if (toTopBtn) {
+        const triggerBounce = () => {
+          toTopBtn.classList.add('bounce');
+          // Retire la classe après la fin de l'animation pour pouvoir la rejouer
+          setTimeout(() => toTopBtn.classList.remove('bounce'), 600);
+        };
+
         window.addEventListener('scroll', () => {
           if (window.scrollY > 400) {
-            toTopBtn.classList.add('show');
+            if (!toTopBtn.classList.contains('show')) {
+              toTopBtn.classList.add('show');
+              triggerBounce(); // Déclenche le rebond au moment où le bouton apparaît
+            }
           } else {
             toTopBtn.classList.remove('show');
           }
         });
+
         toTopBtn.addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
+          triggerBounce(); // Déclenche le rebond au clic
         });
       }
 
@@ -1152,7 +1255,5 @@
   <button id="toTop" aria-label="Retour en haut">↑</button>
 
 </body>
-
-</html>
 
 </html>
