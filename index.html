@@ -1043,28 +1043,33 @@
 
       function openModal({ title, role, synopsis, image, link }) {
         backdrop.innerHTML = `
-      <div class="modal" role="document">
-        <div class="modal-head">
-          <strong>${title}</strong>
-          <button class="close-btn" aria-label="Fermer" onclick="(${closeModal.toString()})()">×</button>
+    <div class="modal" role="document">
+      <div class="modal-head">
+        <strong>${title}</strong>
+        <button class="close-btn" aria-label="Fermer">×</button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <img alt="Affiche du projet" src="${image}" />
         </div>
-        <div class="modal-body">
-          <div>
-            <img alt="Affiche du projet" src="${image}" />
-          </div>
-          <div>
-            <p>${synopsis || ''}</p>
-            <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
-            <div class="actions" style="margin-top: .8rem">
-              ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
-              <button class="btn" onclick="(${closeModal.toString()})()">Fermer</button>
-            </div>
+        <div>
+          <p>${synopsis || ''}</p>
+          <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
+          <div class="actions" style="margin-top: .8rem">
+            ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
+            <button class="btn close-btn">Fermer</button>
           </div>
         </div>
-      </div>`;
+      </div>
+    </div>`;
+
+        // Ajouter les listeners pour fermer la modale
+        backdrop.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', closeModal));
+
         backdrop.setAttribute('open', '');
         document.body.style.overflow = 'hidden';
       }
+
 
       function closeModal() {
         backdrop.removeAttribute('open');
