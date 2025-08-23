@@ -795,7 +795,7 @@
     <div class="about">
       <div class="panel">
         <!-- 🖼️ PLACEHOLDER À REMPLACER PAR TON PORTRAIT -->
-        <img alt="portrait" class="portrait" loading="lazy" src="moi.svg" />
+        <img alt="portrait" class="portrait" loading="lazy" src="moi.png" />
       </div>
       <div class="panel">
         <h2>À propos</h2>
@@ -827,7 +827,7 @@
       <article class="card" data-title="DreamScape" data-role="Artiste / Interprète"
         data-synopsis="DreamScape est directement inspiré du groupe Tame Impala, j'ai essayer de réaliser un son avec la même ambiance par pure passion !"
         data-link="https://soundcloud.com/p1cs0u/dreamscape" aria-label="Ouvrir les détails du projet DreamScape">
-        <img class="thumb" alt="Affiche du projet DreamScape, musique psychédélique" loading="lazy" src="P1CS0U.svg" />
+        <img class="thumb" alt="Affiche du projet DreamScape, musique psychédélique" loading="lazy" src="P1CS0U.png" />
         <div class="body">
           <h3>DreamScape</h3>
           <p>Musique — psychédélique</p>
@@ -839,7 +839,7 @@
       <article class="card" data-title="Silence 24" data-role="Réalisateur / Co-scénariste"
         data-synopsis="Un huis clos sonore où le silence devient personnage principal."
         data-link="https://youtube.com/">
-        <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="placeholder.svg" />
+        <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="placeholder.png" />
         <div class="body">
           <h3>Silence 24</h3>
           <p>Court-métrage — Huis clos</p>
@@ -849,7 +849,7 @@
 
       <article class="card" data-title="Nocturne Bleu" data-role="Assistant réal"
         data-synopsis="Errance nocturne d’un personnage à la recherche d’un son perdu." data-link="">
-        <img class="thumb" alt="Affiche du projet huis clos sonore" loading="lazy" src="placeholder.svg" />
+        <img class="thumb" alt="Affiche du projet huis clos sonore" loading="lazy" src="placeholder.png" />
         <div class="body">
           <h3>Nocturne Bleu</h3>
           <p>Court-métrage — Errance</p>
@@ -949,7 +949,8 @@
           Discord
         </a>
 
-        <a class="chip instagram" href="https://www.instagram.com/clement.chrp_" target="_blank" rel="noreferrer noopener">
+        <a class="chip instagram" href="https://www.instagram.com/clement.chrp_" target="_blank"
+          rel="noreferrer noopener">
           <svg viewBox="0 0 24 24">
             <path
               d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2a1 1 0 110 2 1 1 0 010-2zm-4.25 1.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.5a4 4 0 100 8 4 4 0 000-8z" />
@@ -1077,42 +1078,40 @@
       }
     });
 
-    const form = document.getElementById("contactForm");
-    const msg = document.getElementById("formMessage");
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("contactForm");
+      const msg = document.getElementById("formMessage");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+      if (!form) return; // sécurité si la page n'a pas le formulaire
 
-      const data = new FormData(form);
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      await fetch("/", {
-        method: "POST",
-        body: new URLSearchParams(data).toString(),
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        const data = new FormData(form);
+        const name = (data.get("name") || "").trim();
+
+        try {
+          await fetch("/", {
+            method: "POST",
+            body: new URLSearchParams(data).toString(),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          });
+
+          // reset + affichage message inline
+          form.reset();
+          msg.textContent = `Merci${name ? `, ${name}` : ""} ! Votre message a bien été envoyé.`;
+          msg.style.display = "block";
+
+          // Optionnel : alerte user-friendly
+          // alert(msg.textContent);
+
+        } catch (err) {
+          console.error("Erreur lors de l’envoi :", err);
+          msg.textContent = "⚠️ Une erreur est survenue, merci de réessayer.";
+          msg.style.display = "block";
+        }
       });
-
-      form.reset();
-      msg.style.display = "block";
     });
-
-    // Formulaire de contact — simple alerte
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = (document.getElementById('name').value || '').trim();
-      alert(`Merci${name ? `, ${name}` : ''} ! Votre message a été envoyé.`);
-      e.target.reset();
-    });
-
-    // Formulaire de contact — message inline
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = (document.getElementById('name').value || '').trim();
-      const messageEl = document.getElementById('formMessage');
-      messageEl.textContent = `Merci${name ? `, ${name}` : ''} ! Votre message a bien été envoyé.`;
-      messageEl.style.display = 'block';
-      e.target.reset();
-    });
-
 
     // --- Lazy-load images automatiquement ---
     document.querySelectorAll('img[src]').forEach(img => {
