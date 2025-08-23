@@ -876,7 +876,7 @@
 
       <!-- Formulaire -->
       <div class="panel">
-        <form id="contactForm" name="contact" method="POST" data-netlify="true" aria-label="Formulaire de contact" netlify>
+        <form id="contactForm" name="contact" method="POST" data-netlify="true" aria-label="Formulaire de contact">
           <!-- champ caché obligatoire pour Netlify -->
           <input type="hidden" name="form-name" value="contact" />
 
@@ -1077,6 +1077,23 @@
       }
     });
 
+    const form = document.getElementById("contactForm");
+    const msg = document.getElementById("formMessage");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = new FormData(form);
+
+      await fetch("/", {
+        method: "POST",
+        body: new URLSearchParams(data).toString(),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      });
+
+      form.reset();
+      msg.style.display = "block";
+    });
 
     // Formulaire de contact — simple alerte
     document.getElementById('contactForm').addEventListener('submit', (e) => {
