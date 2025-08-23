@@ -974,193 +974,172 @@
      * 4) Modifie la palette dans :root si tu veux (or ➜ rouge cinéma, bleu nuit, etc.)
      */
 
-    const animEls = document.querySelectorAll('[data-animate]');
-    if (animEls.length > 0) {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      }, { threshold: 0.2 });
-
-      animEls.forEach(el => observer.observe(el));
-    }
-
-    // --- Burger menu (mobile) ---
-    const burgerBtn = document.querySelector('.burger');
-    const primaryNav = document.getElementById('primary-nav');
-
-    if (burgerBtn && primaryNav) {
-      const setState = (open) => {
-        primaryNav.setAttribute('data-state', open ? 'open' : 'closed');
-        burgerBtn.setAttribute('aria-expanded', String(open));
-      };
-      burgerBtn.addEventListener('click', () => {
-        const open = primaryNav.getAttribute('data-state') !== 'open';
-        setState(open);
-      });
-      // Ferme au clic sur un lien
-      primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setState(false)));
-      // Ferme avec Échap
-      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setState(false); });
-    }
-
-    // Année automatique dans le footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Scroll tracking pour effet halo léger du hero
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      document.documentElement.style.setProperty('--scroll', y);
-      // Active link highlighting
-      highlightNav();
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    // Navigation active selon section visible
-    const links = Array.from(document.querySelectorAll('.navlink'));
-    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-
-    function highlightNav() {
-      let idx = 0;
-      const fromTop = window.scrollY + window.innerHeight / 3; // plus fluide
-      for (let i = 0; i < sections.length; i++) {
-        const sec = sections[i];
-        if (sec.offsetTop <= fromTop) idx = i;
-      }
-      links.forEach(l => l.classList.remove('active'));
-      links[idx]?.classList.add('active');
-    }
-    highlightNav();
-
-    // Modales projets — ouverture à partir des .card (dataset)
-    const backdrop = document.createElement('div');
-    backdrop.className = 'modal-backdrop';
-    backdrop.setAttribute('role', 'dialog');
-    backdrop.setAttribute('aria-modal', 'true');
-    document.body.appendChild(backdrop);
-
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeModal();
-    });
-
-    function openModal({ title, role, synopsis, image, link }) {
-      backdrop.innerHTML = `
-        <div class="modal" role="document">
-          <div class="modal-head">
-            <strong>${title}</strong>
-            <button class="close-btn" aria-label="Fermer" onclick="(${closeModal.toString()})()">×</button>
-          </div>
-          <div class="modal-body">
-            <div>
-              <img alt="Affiche du projet" src="${image}" />
-            </div>
-            <div>
-              <p>${synopsis || ''}</p>
-              <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
-              <div class="actions" style="margin-top: .8rem">
-                ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
-                <button class="btn" onclick="(${closeModal.toString()})()">Fermer</button>
-              </div>
-            </div>
-          </div>
-        </div>`;
-      backdrop.setAttribute('open', '');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      backdrop.removeAttribute('open');
-      backdrop.innerHTML = '';
-      document.body.style.overflow = '';
-    }
-
-    document.getElementById('cards').addEventListener('click', (e) => {
-      const card = e.target.closest('.card');
-      if (!card) return;
-
-      // On ouvre uniquement si on clique sur la carte OU sur le bouton "En savoir plus"
-      if (e.target.classList.contains('more-btn') || e.target.closest('.body')) {
-        const title = card.dataset.title || 'Projet';
-        const role = card.dataset.role || '';
-        const synopsis = card.dataset.synopsis || '';
-        const link = card.dataset.link || '';
-        const img = card.querySelector('img')?.getAttribute('src');
-        openModal({ title, role, synopsis, image: img, link });
-      }
-    });
-
-    const cardsContainer = document.getElementById('cards');
-    if (cardsContainer) {
-      cardsContainer.addEventListener('click', (e) => { /* … */ });
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
+
+      // --- Animation IntersectionObserver ---
+      const animEls = document.querySelectorAll('[data-animate]');
+      if (animEls.length > 0) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+          });
+        }, { threshold: 0.2 });
+        animEls.forEach(el => observer.observe(el));
+      }
+
+      // --- Burger menu (mobile) ---
+      const burgerBtn = document.querySelector('.burger');
+      const primaryNav = document.getElementById('primary-nav');
+      if (burgerBtn && primaryNav) {
+        const setState = (open) => {
+          primaryNav.setAttribute('data-state', open ? 'open' : 'closed');
+          burgerBtn.setAttribute('aria-expanded', String(open));
+        };
+        burgerBtn.addEventListener('click', () => {
+          const open = primaryNav.getAttribute('data-state') !== 'open';
+          setState(open);
+        });
+        primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setState(false)));
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setState(false); });
+      }
+
+      // --- Année automatique dans le footer ---
+      const yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // --- Scroll tracking pour effet halo léger du hero & highlight nav ---
+      const links = Array.from(document.querySelectorAll('.navlink'));
+      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+      const onScroll = () => {
+        const y = window.scrollY || 0;
+        document.documentElement.style.setProperty('--scroll', y);
+        highlightNav();
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      function highlightNav() {
+        let idx = 0;
+        const fromTop = window.scrollY + window.innerHeight / 3;
+        for (let i = 0; i < sections.length; i++) {
+          if (sections[i].offsetTop <= fromTop) idx = i;
+        }
+        links.forEach(l => l.classList.remove('active'));
+        links[idx]?.classList.add('active');
+      }
+      highlightNav();
+
+      // --- Modales projets ---
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop';
+      backdrop.setAttribute('role', 'dialog');
+      backdrop.setAttribute('aria-modal', 'true');
+      document.body.appendChild(backdrop);
+
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) closeModal();
+      });
+
+      function openModal({ title, role, synopsis, image, link }) {
+        backdrop.innerHTML = `
+      <div class="modal" role="document">
+        <div class="modal-head">
+          <strong>${title}</strong>
+          <button class="close-btn" aria-label="Fermer" onclick="(${closeModal.toString()})()">×</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <img alt="Affiche du projet" src="${image}" />
+          </div>
+          <div>
+            <p>${synopsis || ''}</p>
+            <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
+            <div class="actions" style="margin-top: .8rem">
+              ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
+              <button class="btn" onclick="(${closeModal.toString()})()">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+        backdrop.setAttribute('open', '');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        backdrop.removeAttribute('open');
+        backdrop.innerHTML = '';
+        document.body.style.overflow = '';
+      }
+
+      const cardsContainer = document.getElementById('cards');
+      if (cardsContainer) {
+        cardsContainer.addEventListener('click', (e) => {
+          const card = e.target.closest('.card');
+          if (!card) return;
+          if (e.target.classList.contains('more-btn') || e.target.closest('.body')) {
+            const title = card.dataset.title || 'Projet';
+            const role = card.dataset.role || '';
+            const synopsis = card.dataset.synopsis || '';
+            const link = card.dataset.link || '';
+            const img = card.querySelector('img')?.getAttribute('src');
+            openModal({ title, role, synopsis, image: img, link });
+          }
+        });
+      }
+
+      // --- Formulaire contact ---
       const form = document.getElementById("contactForm");
       const msg = document.getElementById("formMessage");
-
-      if (!form) {
-        console.warn("Pas de formulaire sur cette page.");
-        return; // stoppe le script si le formulaire n’existe pas
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const data = new FormData(form);
+          const name = (data.get("name") || "").trim();
+          try {
+            await fetch("/", {
+              method: "POST",
+              body: new URLSearchParams(data).toString(),
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            });
+            form.reset();
+            if (msg) {
+              msg.textContent = `Merci${name ? `, ${name}` : ""} ! Votre message a bien été envoyé.`;
+              msg.style.display = "block";
+            }
+          } catch (err) {
+            console.error("Erreur lors de l’envoi :", err);
+            if (msg) {
+              msg.textContent = "⚠️ Une erreur est survenue, merci de réessayer.";
+              msg.style.display = "block";
+            }
+          }
+        });
       }
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const data = new FormData(form);
-        const name = (data.get("name") || "").trim();
-
-        try {
-          await fetch("/", {
-            method: "POST",
-            body: new URLSearchParams(data).toString(),
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          });
-
-          form.reset();
-          if (msg) {
-            msg.textContent = `Merci${name ? `, ${name}` : ""} ! Votre message a bien été envoyé.`;
-            msg.style.display = "block";
-          }
-        } catch (err) {
-          console.error("Erreur lors de l’envoi :", err);
-          if (msg) {
-            msg.textContent = "⚠️ Une erreur est survenue, merci de réessayer.";
-            msg.style.display = "block";
-          }
+      // --- Lazy-load images ---
+      document.querySelectorAll('img[src]').forEach(img => {
+        if ((img.getAttribute('src') || '').trim() !== '') {
+          img.loading = 'lazy';
+          img.decoding = 'async';
         }
       });
-    });
 
-    // --- Lazy-load images automatiquement ---
-    document.querySelectorAll('img[src]').forEach(img => {
-      if ((img.getAttribute('src') || '').trim() !== '') {
-        img.loading = 'lazy';
-        img.decoding = 'async';
+      // --- Scroll to top button ---
+      const toTopBtn = document.getElementById('toTop');
+      if (toTopBtn) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 400) {
+            toTopBtn.classList.add('show');
+          } else {
+            toTopBtn.classList.remove('show');
+          }
+        });
+        toTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       }
+
     });
-
-    // --- Scroll to top button ---
-    const toTopBtn = document.getElementById('toTop');
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 400) {
-        toTopBtn.classList.add('show');
-      } else {
-        toTopBtn.classList.remove('show');
-      }
-    });
-
-    toTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
 
   </script>
 
