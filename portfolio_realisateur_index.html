@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Réalisateur — Clément</title>
+  <meta name="description"
+    content="Portfolio de réalisateur — Étudiant en bachelor réalisation à l’EICAR. Projets, filmographie, contact." />
+  <style>
+    /* =========================
+       🎬 CONFIGURATIONS GLOBALES
+       - Modifie facilement couleurs & styles ici
+       ========================= */
+    :root {
+      /* 🎨 Palette (modifiable) */
+      --bg: #0e0e10;
+      /* Fond très sombre */
+      --bg-2: #16161a;
+      /* Surfaces */
+      --fg: #e6e6e9;
+      /* Texte principal */
+      --muted: #b5b5bd;
+      /* Texte secondaire */
+      --accent: #d4af37;
+      /* Or doux par défaut */
+      --accent-2: #a6811f;
+      /* Or foncé */
+
+      /* 🧱 Mise en page */
+      --maxw: 1100px;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .55);
+
+      /* 🎞️ Motion */
+      --ease: cubic-bezier(.22, .61, .36, 1);
+      --duration: .6s;
+
+      /* 🧍🏻‍♂️ Typo (polices système) */
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    /* Reset & base */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--fg);
+      background: var(--bg);
+      font: 16px/1.6 var(--font);
+      /* Léger grain cinéma */
+      background-image:
+        radial-gradient(1200px 800px at 20% -10%, rgba(212, 175, 55, .06), rgba(0, 0, 0, 0)),
+        radial-gradient(1000px 700px at 120% 10%, rgba(212, 175, 55, .05), rgba(0, 0, 0, 0)),
+        radial-gradient(800px 600px at 50% 120%, rgba(255, 255, 255, .04), rgba(0, 0, 0, 0));
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: calc(var(--radius) - 6px);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(100% - 2rem, var(--maxw));
+      margin-inline: auto;
+    }
+
+    /* =========================
+       🔝 NAVIGATION FIXE
+       ========================= */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .75rem 0;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .brand .dot {
+      color: var(--accent);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: .75rem;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--muted);
+      transition: background var(--duration) var(--ease), color var(--duration) var(--ease), transform .2s;
+    }
+
+    nav a:hover {
+      color: var(--fg);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    nav a.active {
+      color: var(--bg);
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    }
+
+    /* =========================
+       🎥 HERO (affiche de film)
+       ========================= */
+    .hero {
+      position: relative;
+      min-height: 86svh;
+      display: grid;
+      place-items: center;
+      overflow: clip;
+    }
+
+    .hero::before {
+      /* Halo cinématographique */
+      content: "";
+      position: absolute;
+      inset: -20%;
+      z-index: -1;
+      background: radial-gradient(1200px 600px at 50% 30%, rgba(212, 175, 55, .12), rgba(0, 0, 0, 0));
+      transform: translateY(calc(var(--scroll, 0) * -0.12));
+      transition: transform .2s linear;
+    }
+
+    .hero-inner {
+      text-align: center;
+      padding: 5rem 1rem;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      letter-spacing: .28em;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    h1 {
+      margin: .6rem 0 1rem;
+      font-size: clamp(2.2rem, 4.6vw, 4rem);
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      max-width: 48ch;
+      margin-inline: auto;
+    }
+
+    .cta {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .9rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 700;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: var(--bg);
+      box-shadow: var(--shadow);
+      transition: transform .2s var(--ease), filter .3s var(--ease);
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    /* =========================
+       👤 À PROPOS
+       ========================= */
+    section {
+      padding: clamp(3rem, 6vw, 6rem) 0;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+      align-items: center;
+    }
+
+    @media (min-width: 880px) {
+      .about {
+        grid-template-columns: .9fr 1.1fr;
+        gap: 2.2rem;
+      }
+    }
+
+    .panel {
+      background: linear-gradient(180deg, color-mix(in srgb, var(--bg-2) 94%, transparent), color-mix(in srgb, var(--bg-2) 88%, transparent));
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(1rem, 3vw, 1.6rem);
+    }
+
+    .about h2,
+    .projects h2,
+    .contact h2 {
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      margin: 0 0 .8rem;
+    }
+
+    .meta {
+      color: var(--muted);
+    }
+
+    /* =========================
+       🎞️ PROJETS — Grille + Modale
+       ========================= */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 980px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: #0b0b0d;
+      border: 1px solid rgba(255, 255, 255, .06);
+      transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease), filter .4s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: var(--shadow);
+    }
+
+    .card .thumb {
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(1.02);
+    }
+
+    .card .body {
+      padding: 1rem;
+    }
+
+    .card h3 {
+      margin: 0 0 .25rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    /* Modale */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0, 0, 0, .6);
+      z-index: 70;
+      padding: 1rem;
+    }
+
+    .modal-backdrop[open] {
+      display: grid;
+    }
+
+    .modal {
+      width: min(100%, 760px);
+      background: var(--bg-2);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: pop var(--duration) var(--ease);
+    }
+
+    @keyframes pop {
+      from {
+        transform: translateY(16px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    @media (min-width: 820px) {
+      .modal-body {
+        grid-template-columns: 1.4fr 1fr;
+      }
+    }
+
+    .close-btn {
+      border: none;
+      background: transparent;
+      color: var(--fg);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem .6rem;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 999px;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem .9rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      background: #121215;
+      color: var(--fg);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s var(--ease), background .3s var(--ease);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #17171b;
+    }
+
+    .btn.primary {
+      border: none;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: var(--bg);
+    }
+
+    /* =========================
+       ✉️ CONTACT
+       ========================= */
+    form {
+      display: grid;
+      gap: .8rem;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: .85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      background: #121215;
+      color: var(--fg);
+      outline: none;
+      transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, .12);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    /* =========================
+       ⬛ FOOTER
+       ========================= */
+    footer {
+      padding: 2rem 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .social {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      color: var(--fg);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .chip svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      /* prend la couleur du texte */
+      transition: transform 0.2s;
+    }
+
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .chip:hover svg {
+      transform: scale(1.2);
+      /* animation du logo */
+    }
+
+    /* Couleurs spécifiques par réseau social */
+    .chip.vimeo {
+      color: #1AB7EA;
+    }
+
+    .chip.youtube {
+      color: #FF0000;
+    }
+
+    .chip.linkedin {
+      color: #0077B5;
+    }
+
+    .chip.instagram {
+      color: #E1306C;
+    }
+
+    /* Accessibilité/Motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =========================
+       🔝 NAVIGATION
+       Remplace [Ton Nom] par ton nom/prénom.
+       ========================= -->
+  <header>
+    <div class="container nav">
+      <a href="#accueil" class="brand" aria-label="Aller à l'accueil">
+        <!-- ✏️ MODIFIER TON NOM ICI -->
+        <span>Clément</span><span class="dot">•</span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <ul>
+          <li><a class="navlink active" href="#accueil">Accueil</a></li>
+          <li><a class="navlink" href="#apropos">À propos</a></li>
+          <li><a class="navlink" href="#projets">Projets</a></li>
+          <li><a class="navlink" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =========================
+       🎥 HERO / AFFICHE D'OUVERTURE
+       Remplace le texte entre crochets.
+       ========================= -->
+  <section class="hero" id="accueil" aria-label="Accueil">
+    <div class="hero-inner container">
+      <div class="kicker">Portfolio réalisateur</div>
+      <h1>Bonjour, je suis <span style="color:var(--accent)">Clément</span><br />Étudiant en réalisation à l’EICAR
+      </h1>
+      <p class="subtitle">Je raconte des histoires en images et en émotions. Mon travail explore la narration visuelle,
+        le rythme et la direction d’acteurs, et part ailleurs artiste et compositeur.</p>
+      <a class="cta" href="#projets" aria-label="Voir mes projets">🎬 Voir mes projets</a>
+    </div>
+  </section>
+
+  <!-- =========================
+       👤 À PROPOS
+       Remplace l'image (src) et le texte.
+       ========================= -->
+  <section class="container" id="apropos" aria-label="À propos">
+    <div class="about">
+      <div class="panel">
+        <!-- 🖼️ PLACEHOLDER À REMPLACER PAR TON PORTRAIT -->
+        <img alt="portrait" class="portrait" src="moi.svg" />
+      </div>
+      <div class="panel">
+        <h2>À propos</h2>
+        <p class="meta">Étudiant en bachelor réalisation à l’EICAR</p>
+        <p>Passionné par la mise en scène et la direction d’acteurs, je développe des projets courts qui explorent le
+          regard, le tempo et l’émotion. Je m’intéresse à la narration visuelle et au travail d’équipe sur le plateau. Je m'interesse aussi a la musique et au sound design.</p>
+        </p>
+        <p>Compétences clés : découpage, direction d’acteurs, collaboration avec chef op/son, gestion de tournage léger.
+        </p>
+        <div class="actions" style="margin-top: .8rem">
+          <a class="btn" href="#contact">Me contacter</a>
+          <a class="btn primary" href="#projets">Filmographie</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       🎞️ PROJETS / FILMOGRAPHIE
+       Remplace les cartes ci-dessous par tes projets (image, titre, synopsis, rôle, lien).
+       - Clique sur une carte pour ouvrir la modale.
+       ========================= -->
+  <section class="container projects" id="projets" aria-label="Projets">
+    <h2>Projets sélectionnés</h2>
+    <p class="meta">Quelques travaux (fictifs) — remplace par tes films</p>
+
+    <div class="grid" id="cards">
+      <!-- 📌 COPIE/EDITE ce bloc .card pour ajouter un projet -->
+      <article class="card" data-title="DreamScape" data-role="Artiste / Interprète"
+        data-synopsis="DreamScape est directement inspiré du groupe Tame Impala, j'ai essayer de réaliser un son avec la même ambiance par pur passions !"
+        data-link="https://soundcloud.com/p1cs0u/dreamscape" aria-label="Ouvrir les détails du projet DreamScape">
+        <img class="thumb" alt="Affiche du projet — à remplacer" src="P1CS0U.svg" />
+        <div class="body">
+          <h3>DreamScape</h3>
+          <p>Musique — psychadelique</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Silence 24" data-role="Réalisateur / Co-scénariste"
+        data-synopsis="Un huis clos sonore où le silence devient personnage principal."
+        data-link="https://youtube.com/">
+        <img class="thumb" alt="Affiche du projet — à remplacer" src="" />
+        <div class="body">
+          <h3>Silence 24</h3>
+          <p>Court-métrage — Huis clos</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Nocturne Bleu" data-role="Assistant réal"
+        data-synopsis="Errance nocturne d’un personnage à la recherche d’un son perdu." data-link="">
+        <img class="thumb" alt="Affiche du projet — à remplacer" src="" />
+        <div class="body">
+          <h3>Nocturne Bleu</h3>
+          <p>Court-métrage — Errance</p>
+        </div>
+      </article>
+
+      <!-- ➕ Ajoute d’autres .card au besoin -->
+    </div>
+  </section>
+
+  <!-- =========================
+       ✉️ CONTACT
+       ========================= -->
+  <section class="container contact" id="contact" aria-label="Contact">
+    <div class="panel">
+      <h2>Contact</h2>
+      <p class="meta">Envie de collaborer ou d’échanger ? Écris-moi.</p>
+      <form id="contactForm" aria-label="Formulaire de contact">
+        <div>
+          <label for="name">Nom</label>
+          <input id="name" name="name" type="text" placeholder="Votre nom" required />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="votre@email.com" required />
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Votre message…" required></textarea>
+        </div>
+        <button type="submit" class="btn primary">Envoyer</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- =========================
+       ⬛ FOOTER
+       Remplace les liens par tes réseaux.
+       ========================= -->
+  <footer>
+    <div class="container"
+      style="display:flex; justify-content: space-between; gap:1rem; align-items:center; flex-wrap:wrap;">
+      <div class="social" aria-label="Réseaux sociaux">
+        <a class="chip vimeo" href="https://vimeo.com/" target="_blank" rel="noreferrer noopener">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M22.5 6.8c-.1 2.5-1.9 5.9-5.2 10-3.5 4.4-6.4 6.6-8.8 6.6-1.5 0-2.7-1.4-3.6-4.1-.6-2-1.2-4-1.8-6-.7-2.1-1.4-3.5-2.3-4.2-.4-.3-1.1-.5-2-.5l-.1-.1c.9-.8 1.8-1.5 2.7-2.1 1.2-.8 2.1-.6 2.7.5.6 1 1 2.2 1.4 3.4.5 1.6.9 2.8 1.3 3.7.8 2.1 1.5 3.1 2.1 3.1.6 0 1.3-.5 2.1-1.5 1.3-1.7 2-3 2.1-3.9.2-1.1-.3-1.6-1.5-1.6-.7 0-1.4.2-2.1.5 1.4-4.5 4.3-6.7 8.1-6.2 2.1.3 3.2 1.5 3 3.5z" />
+          </svg>
+          Vimeo
+        </a>
+
+        <a class="chip youtube" href="https://youtube.com/" target="_blank" rel="noreferrer noopener">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M21.8 8s-.2-1.6-.8-2.3c-.8-.9-1.7-.9-2.1-1C16.3 4 12 4 12 4h0s-4.3 0-6.9.7c-.4.1-1.3.1-2.1 1-.6.7-.8 2.3-.8 2.3S2 9.8 2 11.5v1c0 1.7.2 3.5.2 3.5s.2 1.6.8 2.3c.8.9 1.9.9 2.4 1C7.7 20 12 20 12 20s4.3 0 6.9-.7c.4-.1 1.3-.1 2.1-1 .6-.7.8-2.3.8-2.3s.2-1.8.2-3.5v-1c0-1.7-.2-3.5-.2-3.5zM10 15V9l5 3-5 3z" />
+          </svg>
+          YouTube
+        </a>
+
+        <a class="chip linkedin" href="https://www.linkedin.com/" target="_blank" rel="noreferrer noopener">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M4.98 3.5a2.5 2.5 0 11-.001 5.001A2.5 2.5 0 014.98 3.5zM2 9h6v12H2V9zm7.5 0h5.5v1.71h.08c.77-1.46 2.64-3 5.44-3 5.82 0 6.89 3.84 6.89 8.83V21h-6v-7.29c0-1.74-.03-3.98-2.42-3.98-2.42 0-2.79 1.89-2.79 3.84V21h-6V9z" />
+          </svg>
+          LinkedIn
+        </a>
+
+        <a class="chip instagram" href="https://www.instagram.com/" target="_blank" rel="noreferrer noopener">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2a1 1 0 110 2 1 1 0 010-2zm-4.25 1.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.5a4 4 0 100 8 4 4 0 000-8z" />
+          </svg>
+          Instagram
+        </a>
+      </div>
+      <div>© <span id="year"></span> — <strong>Clement</strong> • Portfolio Réalisateur</div>
+    </div>
+  </footer>
+
+  <!-- =========================
+       🧠 SCRIPTS — interactions
+       ========================= -->
+  <script>
+    /*
+     * ✅ GUIDE DE PERSONNALISATION RAPIDE
+     * 1) Remplace [Ton Nom] dans le header, le hero et le footer
+     * 2) Remplace l'image du portrait (src de l'img data:… ➜ par ton fichier local ex: images/portrait.jpg)
+     * 3) Remplace les cartes projets (titre, synopsis, rôle, lien)
+     * 4) Modifie la palette dans :root si tu veux (or ➜ rouge cinéma, bleu nuit, etc.)
+     */
+
+    // Année automatique dans le footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll tracking pour effet halo léger du hero
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      document.documentElement.style.setProperty('--scroll', y);
+      // Active link highlighting
+      highlightNav();
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Navigation active selon section visible
+    const links = Array.from(document.querySelectorAll('.navlink'));
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    function highlightNav() {
+      let idx = 0;
+      const fromTop = window.scrollY + 120;
+      for (let i = 0; i < sections.length; i++) {
+        const sec = sections[i];
+        if (sec.offsetTop <= fromTop) idx = i;
+      }
+      links.forEach(l => l.classList.remove('active'));
+      links[idx]?.classList.add('active');
+    }
+    highlightNav();
+
+    // Modales projets — ouverture à partir des .card (dataset)
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop';
+    backdrop.setAttribute('role', 'dialog');
+    backdrop.setAttribute('aria-modal', 'true');
+    document.body.appendChild(backdrop);
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+
+    function openModal({ title, role, synopsis, image, link }) {
+      backdrop.innerHTML = `
+        <div class="modal" role="document">
+          <div class="modal-head">
+            <strong>${title}</strong>
+            <button class="close-btn" aria-label="Fermer" onclick="(${closeModal.toString()})()">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <img alt="Affiche du projet" src="${image}" />
+            </div>
+            <div>
+              <p>${synopsis || ''}</p>
+              <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
+              <div class="actions" style="margin-top: .8rem">
+                ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
+                <button class="btn" onclick="(${closeModal.toString()})()">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      backdrop.setAttribute('open', '');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      backdrop.removeAttribute('open');
+      backdrop.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('cards').addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (!card) return;
+      const title = card.dataset.title || 'Projet';
+      const role = card.dataset.role || '';
+      const synopsis = card.dataset.synopsis || '';
+      const link = card.dataset.link || '';
+      const img = card.querySelector('img')?.getAttribute('src');
+      openModal({ title, role, synopsis, image: img, link });
+    });
+
+    // Formulaire de contact — simple alerte
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('name').value || '').trim();
+      alert(`Merci${name ? `, ${name}` : ''} ! Votre message a été envoyé.`);
+      e.target.reset();
+    });
+  </script>
+</body>
+
+</html>
