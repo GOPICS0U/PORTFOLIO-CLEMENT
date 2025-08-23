@@ -974,6 +974,17 @@
      * 4) Modifie la palette dans :root si tu veux (or ➜ rouge cinéma, bleu nuit, etc.)
      */
 
+    const animEls = document.querySelectorAll('[data-animate]');
+    if (animEls.length > 0) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.2 });
+
+      animEls.forEach(el => observer.observe(el));
+    }
+
     // --- Burger menu (mobile) ---
     const burgerBtn = document.querySelector('.burger');
     const primaryNav = document.getElementById('primary-nav');
@@ -1078,11 +1089,19 @@
       }
     });
 
+    const cardsContainer = document.getElementById('cards');
+    if (cardsContainer) {
+      cardsContainer.addEventListener('click', (e) => { /* … */ });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("contactForm");
       const msg = document.getElementById("formMessage");
 
-      if (!form) return; // sécurité si la page n'a pas le formulaire
+      if (!form) {
+        console.warn("Pas de formulaire sur cette page.");
+        return; // stoppe le script si le formulaire n’existe pas
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -1097,18 +1116,17 @@
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
           });
 
-          // reset + affichage message inline
           form.reset();
-          msg.textContent = `Merci${name ? `, ${name}` : ""} ! Votre message a bien été envoyé.`;
-          msg.style.display = "block";
-
-          // Optionnel : alerte user-friendly
-          // alert(msg.textContent);
-
+          if (msg) {
+            msg.textContent = `Merci${name ? `, ${name}` : ""} ! Votre message a bien été envoyé.`;
+            msg.style.display = "block";
+          }
         } catch (err) {
           console.error("Erreur lors de l’envoi :", err);
-          msg.textContent = "⚠️ Une erreur est survenue, merci de réessayer.";
-          msg.style.display = "block";
+          if (msg) {
+            msg.textContent = "⚠️ Une erreur est survenue, merci de réessayer.";
+            msg.style.display = "block";
+          }
         }
       });
     });
