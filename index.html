@@ -4,6 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:title" content="Portfolio Réalisateur — Clément" />
+  <meta property="og:description" content="Découvrez mes projets de réalisation et ma filmographie." />
+  <meta property="og:image" content="URL_DE_TON_IMAGE_PREVIEW.jpg" />
+  <meta property="og:type" content="website" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Portfolio Réalisateur — Clément" />
+  <meta name="twitter:description" content="Découvrez mes projets de réalisation et ma filmographie." />
+  <meta name="twitter:image" content="URL_DE_TON_IMAGE_PREVIEW.jpg" />
+
   <title>Portfolio Réalisateur — Clément</title>
   <meta name="description"
     content="Portfolio de réalisateur — Étudiant en bachelor réalisation à l’EICAR. Projets, filmographie, contact." />
@@ -498,6 +508,19 @@
       transition: transform .2s var(--ease), background .3s var(--ease);
     }
 
+    /* Bouton secondaire dans les cartes */
+    .btn.small {
+      font-size: .85rem;
+      padding: .45rem .8rem;
+      border-radius: 8px;
+    }
+
+    .card .more-btn {
+      margin-top: .6rem;
+      width: 100%;
+      text-align: center;
+    }
+
     .btn:hover {
       transform: translateY(-2px);
       background: #17171b;
@@ -707,29 +730,33 @@
       <article class="card" data-title="DreamScape" data-role="Artiste / Interprète"
         data-synopsis="DreamScape est directement inspiré du groupe Tame Impala, j'ai essayer de réaliser un son avec la même ambiance par pur passions !"
         data-link="https://soundcloud.com/p1cs0u/dreamscape" aria-label="Ouvrir les détails du projet DreamScape">
-        <img class="thumb" alt="Affiche du projet — à remplacer" loading="lazy" src="P1CS0U.svg" />
+        <img class="thumb" alt="Affiche du projet DreamScape, musique psychédélique" loading="lazy" src="P1CS0U.svg" />
         <div class="body">
           <h3>DreamScape</h3>
           <p>Musique — psychadelique</p>
+          <button class="btn small more-btn">En savoir plus</button>
         </div>
       </article>
+
 
       <article class="card" data-title="Silence 24" data-role="Réalisateur / Co-scénariste"
         data-synopsis="Un huis clos sonore où le silence devient personnage principal."
         data-link="https://youtube.com/">
-        <img class="thumb" alt="Affiche du projet — à remplacer" loading="lazy" src="" />
+        <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="" />
         <div class="body">
           <h3>Silence 24</h3>
           <p>Court-métrage — Huis clos</p>
+          <button class="btn small more-btn">En savoir plus</button>
         </div>
       </article>
 
       <article class="card" data-title="Nocturne Bleu" data-role="Assistant réal"
         data-synopsis="Errance nocturne d’un personnage à la recherche d’un son perdu." data-link="">
-        <img class="thumb" alt="Affiche du projet — à remplacer" loading="lazy" src="" />
+        <img class="thumb" alt="Affiche du projet huis clos sonore" loading="lazy" src="" />
         <div class="body">
           <h3>Nocturne Bleu</h3>
           <p>Court-métrage — Errance</p>
+          <button class="btn small more-btn">En savoir plus</button>
         </div>
       </article>
 
@@ -837,11 +864,6 @@
       window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setState(false); });
     }
 
-    // Fermer le menu quand on clique sur un lien
-    document.querySelectorAll('.navlink').forEach(link => {
-      link.addEventListener('click', () => navMenu.classList.remove('open'));
-    });
-
     // Année automatique dans le footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -915,13 +937,18 @@
     document.getElementById('cards').addEventListener('click', (e) => {
       const card = e.target.closest('.card');
       if (!card) return;
-      const title = card.dataset.title || 'Projet';
-      const role = card.dataset.role || '';
-      const synopsis = card.dataset.synopsis || '';
-      const link = card.dataset.link || '';
-      const img = card.querySelector('img')?.getAttribute('src');
-      openModal({ title, role, synopsis, image: img, link });
+
+      // On ouvre uniquement si on clique sur la carte OU sur le bouton "En savoir plus"
+      if (e.target.classList.contains('more-btn') || e.target.closest('.body')) {
+        const title = card.dataset.title || 'Projet';
+        const role = card.dataset.role || '';
+        const synopsis = card.dataset.synopsis || '';
+        const link = card.dataset.link || '';
+        const img = card.querySelector('img')?.getAttribute('src');
+        openModal({ title, role, synopsis, image: img, link });
+      }
     });
+
 
     // Formulaire de contact — simple alerte
     document.getElementById('contactForm').addEventListener('submit', (e) => {
