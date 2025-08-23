@@ -712,25 +712,27 @@
     /* Bouton retour en haut */
     #toTop {
       position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 44px;
-      height: 44px;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      border: none;
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      background: var(--accent);
       color: var(--bg);
-      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
       cursor: pointer;
-      box-shadow: var(--shadow);
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity .3s var(--ease), transform .3s var(--ease);
-      z-index: 99;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.3s ease;
+      z-index: 9999;
     }
 
     #toTop.show {
       opacity: 1;
+      pointer-events: auto;
       transform: translateY(0);
     }
 
@@ -837,7 +839,7 @@
       <article class="card" data-title="Silence 24" data-role="Réalisateur / Co-scénariste"
         data-synopsis="Un huis clos sonore où le silence devient personnage principal."
         data-link="https://youtube.com/">
-        <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="" />
+        <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="placeholder.svg" />
         <div class="body">
           <h3>Silence 24</h3>
           <p>Court-métrage — Huis clos</p>
@@ -847,7 +849,7 @@
 
       <article class="card" data-title="Nocturne Bleu" data-role="Assistant réal"
         data-synopsis="Errance nocturne d’un personnage à la recherche d’un son perdu." data-link="">
-        <img class="thumb" alt="Affiche du projet huis clos sonore" loading="lazy" src="" />
+        <img class="thumb" alt="Affiche du projet huis clos sonore" loading="lazy" src="placeholder.svg" />
         <div class="body">
           <h3>Nocturne Bleu</h3>
           <p>Court-métrage — Errance</p>
@@ -874,7 +876,10 @@
 
       <!-- Formulaire -->
       <div class="panel">
-        <form id="contactForm" aria-label="Formulaire de contact">
+        <form id="contactForm" name="contact" method="POST" data-netlify="true" aria-label="Formulaire de contact">
+          <!-- champ caché obligatoire pour Netlify -->
+          <input type="hidden" name="form-name" value="contact" />
+
           <div>
             <label for="name">Nom</label>
             <div style="position:relative;">
@@ -882,6 +887,7 @@
               <input id="name" name="name" type="text" placeholder="Votre nom" required style="padding-left:2.2rem;" />
             </div>
           </div>
+
           <div>
             <label for="email">Email</label>
             <div style="position:relative;">
@@ -890,6 +896,7 @@
                 style="padding-left:2.2rem;" />
             </div>
           </div>
+
           <div>
             <label for="message">Message</label>
             <div style="position:relative;">
@@ -898,12 +905,15 @@
                 style="padding-left:2.2rem;"></textarea>
             </div>
           </div>
+
           <button type="submit" class="btn primary">✉️ Envoyer le message</button>
-          <p id="formMessage" class="meta" style="margin-top:.6rem;color:var(--accent);display:none;">Merci ! Votre
-            message a bien été envoyé.</p>
+
+          <!-- message de confirmation (affiché après redirection ou JS custom) -->
+          <p id="formMessage" class="meta" style="margin-top:.6rem;color:var(--accent);display:none;">
+            Merci ! Votre message a bien été envoyé.
+          </p>
         </form>
       </div>
-    </div>
   </section>
 
 
@@ -1097,6 +1107,7 @@
 
     // --- Scroll to top button ---
     const toTopBtn = document.getElementById('toTop');
+
     window.addEventListener('scroll', () => {
       if (window.scrollY > 400) {
         toTopBtn.classList.add('show');
@@ -1104,6 +1115,7 @@
         toTopBtn.classList.remove('show');
       }
     });
+
     toTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
