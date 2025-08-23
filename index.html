@@ -136,6 +136,38 @@
       background: linear-gradient(120deg, var(--accent), var(--accent-2));
     }
 
+    .burger {
+      display: none;
+      font-size: 1.6rem;
+      background: none;
+      border: none;
+      color: var(--fg);
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 100%;
+        right: 1rem;
+        background: var(--bg-2);
+        padding: 1rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      .burger {
+        display: block;
+      }
+    }
+
     /* =========================
        🎥 HERO (affiche de film)
        ========================= */
@@ -538,6 +570,9 @@
           <li><a class="navlink" href="#apropos">À propos</a></li>
           <li><a class="navlink" href="#projets">Projets</a></li>
           <li><a class="navlink" href="#contact">Contact</a></li>
+          <button class="burger" aria-label="Menu">
+            ☰
+          </button>
         </ul>
       </nav>
     </div>
@@ -710,6 +745,18 @@
      * 4) Modifie la palette dans :root si tu veux (or ➜ rouge cinéma, bleu nuit, etc.)
      */
 
+    const burger = document.querySelector('.burger');
+    const navMenu = document.querySelector('nav ul');
+
+    burger.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+    });
+
+    // Fermer le menu quand on clique sur un lien
+    document.querySelectorAll('.navlink').forEach(link => {
+      link.addEventListener('click', () => navMenu.classList.remove('open'));
+    });
+    
     // Année automatique dans le footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
