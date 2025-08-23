@@ -570,11 +570,11 @@
           <li><a class="navlink" href="#apropos">À propos</a></li>
           <li><a class="navlink" href="#projets">Projets</a></li>
           <li><a class="navlink" href="#contact">Contact</a></li>
-          <button class="burger" aria-label="Menu">
-            ☰
-          </button>
         </ul>
       </nav>
+      <button class="burger" aria-label="Menu">
+        ☰
+      </button>
     </div>
   </header>
 
@@ -756,7 +756,7 @@
     document.querySelectorAll('.navlink').forEach(link => {
       link.addEventListener('click', () => navMenu.classList.remove('open'));
     });
-    
+
     // Année automatique dans le footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
