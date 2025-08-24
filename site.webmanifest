@@ -1,0 +1,17 @@
+{
+  "name": "Portfolio Réalisateur — Clément",
+  "short_name": "Portfolio Clément",
+  "description": "Portfolio de réalisateur — Étudiant en bachelor réalisation à l’EICAR. Projets, filmographie, contact.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0e10",
+  "theme_color": "#0e0e10",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "500x500",
+      "type": "image/ico"
+    }
+  ]
+}
