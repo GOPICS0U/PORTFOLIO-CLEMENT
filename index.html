@@ -3,12 +3,12 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="theme-color" content="#0e0e10">
+  <meta name="theme-color" content="#d4af37">
   <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="keywords" content="réalisateur, film, court-métrage, portfolio, EICAR, Clément">
+  <meta name="keywords" content="réalisateur, film, court-métrage, portfolio, EICAR, Clément, réalisation, cinéma, musique">
   <meta name="description"
-    content="Portfolio de réalisateur — Étudiant en bachelor réalisation à l’EICAR. Projets, filmographie, contact." />
+    content="Portfolio de réalisateur — Étudiant en bachelor réalisation à l'EICAR. Découvrez mes projets de films, ma filmographie et mes créations musicales." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Portfolio Réalisateur — Clément" />
@@ -30,859 +30,47 @@
   <!-- Polices Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Préchargement des images critiques -->
   <link rel="preload" as="image" href="moi.png">
   <link rel="preload" as="image" href="preview.png">
-
-  <!-- Manifest (vérifie que site.webmanifest existe à la racine) -->
   <link rel="manifest" href="/site.webmanifest">
-
-  <style>
-    /* =========================
-       🎬 CONFIGURATIONS GLOBALES
-       - Modifie facilement couleurs & styles ici
-       ========================= */
-    :root {
-      /* 🎨 Palette (modifiable) */
-      --bg: #0e0e10;
-      /* Fond très sombre */
-      --bg-2: #16161a;
-      /* Surfaces */
-      --fg: #e6e6e9;
-      /* Texte principal */
-      --muted: #b5b5bd;
-      /* Texte secondaire */
-      --accent: #d4af37;
-      /* Or doux par défaut */
-      --accent-2: #a6811f;
-      /* Or foncé */
-
-      /* 🧱 Mise en page */
-      --maxw: 1100px;
-      --radius: 18px;
-      --shadow: 0 10px 30px rgba(0, 0, 0, .55);
-
-      /* 🎞️ Motion */
-      --ease: cubic-bezier(.22, .61, .36, 1);
-      --duration: .6s;
-
-      /* 🧍🏻‍♂️ Typo (polices système) */
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-
-    /* Reset & base */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    section[id] {
-      scroll-margin-top: 80px;
-      /* hauteur approximative de ta nav */
-    }
-
-    [data-animate] {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-    }
-
-    [data-animate].fade-up {
-      transform: translateY(30px);
-      opacity: 0;
-    }
-
-    [data-animate].fade-left {
-      transform: translateX(-30px);
-      opacity: 0;
-    }
-
-    [data-animate].fade-right {
-      transform: translateX(30px);
-      opacity: 0;
-    }
-
-    [data-animate].fade-scale {
-      transform: scale(0.95);
-      opacity: 0;
-    }
-
-    [data-animate].visible {
-      transform: translate(0, 0) scale(1);
-      opacity: 1;
-      transition: all 0.8s var(--ease);
-    }
-
-    body {
-      margin: 0;
-      color: var(--fg);
-      background: var(--bg);
-      font: 16px/1.6 var(--font);
-      /* Léger grain cinéma */
-      background-image:
-        radial-gradient(1200px 800px at 20% -10%, rgba(212, 175, 55, .06), rgba(0, 0, 0, 0)),
-        radial-gradient(1000px 700px at 120% 10%, rgba(212, 175, 55, .05), rgba(0, 0, 0, 0)),
-        radial-gradient(800px 600px at 50% 120%, rgba(255, 255, 255, .04), rgba(0, 0, 0, 0));
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-      border-radius: calc(var(--radius) - 6px);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .container {
-      width: min(100% - 2rem, var(--maxw));
-      margin-inline: auto;
-    }
-
-    :focus-visible {
-      outline: 2px solid var(--accent);
-    }
-
-    /* =========================
-       🔝 NAVIGATION FIXE
-       ========================= */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(8px);
-      background: rgba(14, 14, 16, 0.85);
-      /* remplace color-mix pour compatibilité */
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.75rem 0;
-    }
-
-    .brand {
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
-    .brand .dot {
-      color: var(--accent);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 0.75rem;
-      padding: 0;
-      margin: 0;
-    }
-
-    nav a {
-      padding: 0.55rem 0.9rem;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--muted);
-      transition:
-        background var(--duration) var(--ease),
-        color var(--duration) var(--ease),
-        transform 0.2s;
-      position: relative;
-    }
-
-    nav a:hover {
-      color: var(--fg);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    nav a.active::after {
-      content: "";
-      display: block;
-      height: 3px;
-      background: var(--accent);
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      border-radius: 3px;
-      /* arrondit les coins de la barre */
-    }
-
-    .burger {
-      display: none;
-      position: relative;
-      width: 42px;
-      height: 38px;
-      border: 0;
-      background: transparent;
-      color: var(--fg);
-      cursor: pointer;
-    }
-
-    .burger span {
-      position: absolute;
-      left: 8px;
-      right: 8px;
-      height: 2px;
-      border-radius: 2px;
-      background: currentColor;
-      transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
-    }
-
-    .burger span:nth-child(1) {
-      top: 11px;
-    }
-
-    .burger span:nth-child(2) {
-      top: 18px;
-    }
-
-    .burger span:nth-child(3) {
-      top: 25px;
-    }
-
-    .burger[aria-expanded="true"] span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-
-    .burger[aria-expanded="true"] span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .burger[aria-expanded="true"] span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
-
-    /* Menu mobile */
-    @media (max-width: 880px) {
-      .nav {
-        position: relative;
-      }
-
-      .burger {
-        display: block;
-      }
-
-      #primary-nav {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: var(--bg-2);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        width: min(260px, 92vw);
-        padding: 0.4rem;
-        transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-        overflow: hidden;
-      }
-
-      #primary-nav ul {
-        flex-direction: column;
-        gap: 0.25rem;
-        margin: 0;
-        padding: 0;
-      }
-
-      #primary-nav a {
-        display: block;
-        padding: 0.8rem 1rem;
-      }
-
-      #primary-nav[data-state="closed"] {
-        opacity: 0;
-        transform: translateY(-8px);
-        pointer-events: none;
-      }
-
-      #primary-nav[data-state="open"] {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-      }
-    }
-
-    /* =========================
-       🎥 HERO (affiche de film)
-       ========================= */
-    .hero {
-      position: relative;
-      min-height: 86svh;
-      display: grid;
-      place-items: center;
-      overflow: clip;
-    }
-
-    .hero::before {
-      /* Halo cinématographique */
-      content: "";
-      position: absolute;
-      inset: -20%;
-      z-index: -1;
-      background: radial-gradient(1200px 600px at 50% 30%, rgba(212, 175, 55, .12), rgba(0, 0, 0, 0));
-      transform: translateY(calc(var(--scroll, 0) * -0.12));
-      transition: transform .2s linear;
-    }
-
-    .hero-inner {
-      transform: translateY(calc(var(--scroll, 0) * 0.1));
-      transition: transform .2s linear;
-      text-align: center;
-    }
-
-    .kicker {
-      text-transform: uppercase;
-      letter-spacing: .28em;
-      color: var(--muted);
-      font-size: .8rem;
-    }
-
-    h1 {
-      margin: .6rem 0 1rem;
-      font-size: clamp(2.2rem, 4.6vw, 4rem);
-      line-height: 1.1;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: clamp(1rem, 1.8vw, 1.15rem);
-      max-width: 48ch;
-      margin-inline: auto;
-    }
-
-    .cta {
-      margin-top: 2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      padding: .9rem 1.2rem;
-      border-radius: 999px;
-      font-weight: 700;
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
-      color: var(--bg);
-      box-shadow: var(--shadow);
-      transition: transform .2s var(--ease), filter .3s var(--ease);
-    }
-
-    .cta:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.05);
-    }
-
-    .cta,
-    .btn.primary {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta::after,
-    .btn.primary::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent);
-      transform: skewX(-20deg);
-      transition: left 0.6s;
-    }
-
-    .cta:hover::after,
-    .btn.primary:hover::after {
-      left: 100%;
-    }
-
-    .typed span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: typeIn 0.5s forwards;
-    }
-
-    @keyframes typeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* =========================
-       👤 À PROPOS
-       ========================= */
-    section {
-      padding: clamp(3rem, 6vw, 6rem) 0;
-    }
-
-    .about {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.6rem;
-      align-items: center;
-    }
-
-    @media (min-width: 880px) {
-      .about {
-        grid-template-columns: .9fr 1.1fr;
-        gap: 2.2rem;
-      }
-    }
-
-    .panel {
-      background: linear-gradient(180deg, color-mix(in srgb, var(--bg-2) 94%, transparent), color-mix(in srgb, var(--bg-2) 88%, transparent));
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: clamp(1rem, 3vw, 1.6rem);
-    }
-
-    .about h2,
-    .projects h2,
-    .contact h2 {
-      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
-      margin: 0 0 .8rem;
-    }
-
-    .meta {
-      color: var(--muted);
-    }
-
-    /* =========================
-       🎞️ PROJETS — Grille + Modale
-       ========================= */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    @media (min-width: 640px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 980px) {
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .card {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--radius);
-      background: #0b0b0d;
-      border: 1px solid rgba(255, 255, 255, .06);
-      transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease), filter .4s;
-      cursor: pointer;
-    }
-
-    .card:hover {
-      transform: translateY(-5px) scale(1.03) rotateZ(1deg);
-      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.25);
-    }
-
-    .card .thumb {
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      filter: contrast(1.05) saturate(1.02);
-    }
-
-    .card .thumb:hover {
-      transform: scale(1.08) rotateZ(0.5deg);
-    }
-
-    .card:hover {
-      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.2);
-    }
-
-    .card .body {
-      padding: 1rem;
-    }
-
-    .card h3 {
-      margin: 0 0 .25rem;
-      font-size: 1.05rem;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .95rem;
-    }
-
-    /* Modale */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      display: none;
-      place-items: center;
-      background: rgba(0, 0, 0, .6);
-      z-index: 70;
-      padding: 1rem;
-    }
-
-    .modal-backdrop[open] {
-      display: grid;
-    }
-
-    .modal {
-      width: min(100%, 760px);
-      background: var(--bg-2);
-      border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      animation: pop var(--duration) var(--ease);
-    }
-
-    @keyframes pop {
-      from {
-        transform: translateY(16px) scale(0.95);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    .modal-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .9rem 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, .06);
-    }
-
-    .modal-body {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      padding: 1rem;
-    }
-
-    @media (min-width: 820px) {
-      .modal-body {
-        grid-template-columns: 1.4fr 1fr;
-      }
-    }
-
-    .close-btn {
-      border: none;
-      background: transparent;
-      color: var(--fg);
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-
-    .meta-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .35rem .6rem;
-      border: 1px solid rgba(255, 255, 255, .12);
-      border-radius: 999px;
-      font-size: .85rem;
-      color: var(--muted);
-    }
-
-    .actions {
-      display: flex;
-      gap: .6rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .65rem .9rem;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, .14);
-      background: #121215;
-      color: var(--fg);
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform .2s var(--ease), background .3s var(--ease);
-    }
-
-    /* Bouton secondaire dans les cartes */
-    .btn.small {
-      font-size: .85rem;
-      padding: .45rem .8rem;
-      border-radius: 8px;
-    }
-
-    .card .more-btn {
-      margin-top: .6rem;
-      width: 100%;
-      text-align: center;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px) scale(1.05);
-      animation: btnGlow 0.6s infinite alternate;
-    }
-
-    .btn.primary {
-      border: none;
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
-      color: var(--bg);
-    }
-
-    @keyframes btnGlow {
-      0% {
-        box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
-      }
-
-      100% {
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-      }
-    }
-
-    /* =========================
-       ✉️ CONTACT
-       ========================= */
-    form {
-      display: grid;
-      gap: .8rem;
-    }
-
-    label {
-      font-weight: 600;
-      font-size: .95rem;
-      color: var(--muted);
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: .85rem 1rem;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, .14);
-      background: #121215;
-      color: var(--fg);
-      outline: none;
-      transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(212, 175, 55, .12);
-    }
-
-    textarea {
-      min-height: 140px;
-      resize: vertical;
-    }
-
-    /* =========================
-       ⬛ FOOTER
-       ========================= */
-    footer {
-      padding: 2rem 0;
-      color: var(--muted);
-      border-top: 1px solid rgba(255, 255, 255, .06);
-    }
-
-    .social {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0.8rem;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 999px;
-      color: var(--fg);
-      text-decoration: none;
-      font-weight: 500;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .chip svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-      /* prend la couleur du texte */
-      transition: transform 0.2s;
-    }
-
-    .chip:hover {
-      background: rgba(255, 255, 255, 0.06);
-      transform: translateY(-2px);
-    }
-
-    .chip:hover svg {
-      transform: scale(1.2);
-      /* animation du logo */
-    }
-
-    .chip.soundcloud:hover {
-      color: #ff7733;
-    }
-
-    .chip.youtube:hover {
-      color: #ff3333;
-    }
-
-    .chip.discord:hover {
-      color: #00a0dc;
-    }
-
-    .chip.instagram:hover {
-      color: #fd1d77;
-    }
-
-    /* Couleurs spécifiques par réseau social */
-    .chip.soundcloud {
-      color: #FF5500;
-    }
-
-    .chip.youtube {
-      color: #FF0000;
-    }
-
-    .chip.discord {
-      color: #0077B5;
-    }
-
-    .chip.instagram {
-      color: #E1306C;
-    }
-
-    /* Accessibilité/Motion */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-      }
-
-      html {
-        scroll-behavior: auto;
-      }
-    }
-
-    @media (hover: none) {
-      .btn:hover {
-        transform: none;
-        filter: none;
-      }
-
-      .card:hover {
-        transform: none;
-        box-shadow: none;
-      }
-    }
-
-    /* Animation de rebond + déformation */
-    @keyframes bounceUp {
-      0% {
-        transform: translateY(0) scale(1, 1);
-      }
-
-      30% {
-        transform: translateY(-15px) scale(1.2, 0.8);
-        /* s'étire horizontalement, écrase verticalement */
-      }
-
-      50% {
-        transform: translateY(-25px) scale(0.9, 1.1);
-        /* inverse pour effet ressort */
-      }
-
-      70% {
-        transform: translateY(-10px) scale(1.05, 0.95);
-      }
-
-      100% {
-        transform: translateY(0) scale(1, 1);
-      }
-    }
-
-    #toTop.show {
-      opacity: 1;
-      pointer-events: auto;
-      /* supprime l'ancienne animation float */
-      transform: translateY(0);
-    }
-
-    /* Déclenche le rebond quand on clique ou scroll vers le haut */
-    #toTop.bounce {
-      animation: bounceUp 0.6s ease-out forwards;
-    }
-
-    /* Animation au survol */
-    #toTop:hover {
-      transform: translateY(-4px) scale(1.1);
-      filter: brightness(1.1);
-    }
-
-    /* Animation au clic */
-    #toTop:active {
-      transform: translateY(-15px) scale(1.2, 0.8);
-      /* léger effet dynamique au clic */
-      transition: transform 0.2s ease;
-    }
-
-    /* Bouton retour en haut */
-    #toTop {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease, transform 0.3s ease;
-      z-index: 9999;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Clément",
+    "jobTitle": "Réalisateur et Étudiant",
+    "description": "Étudiant en bachelor réalisation à l'EICAR, passionné par la mise en scène et la création musicale",
+    "url": "https://portfolio-realisation.netlify.app/",
+    "sameAs": [
+      "https://soundcloud.com/p1cs0u",
+      "https://www.instagram.com/clement.chrp_"
+    ]
+  }
+  </script>
 </head>
 
 <body>
+  <!-- Progress bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Skip to content -->
+  <a href="#accueil" class="skip-link">Aller au contenu principal</a>
 
   <!-- =========================
        🔝 NAVIGATION
-       Remplace [Ton Nom] par ton nom/prénom.
        ========================= -->
   <header>
     <div class="container nav">
       <a href="#accueil" class="brand" aria-label="Aller à l'accueil">
-        <!-- ✏️ MODIFIER TON NOM ICI -->
         <span>Clément</span><span class="dot">•</span>
       </a>
+      
       <!-- BOUTON BURGER -->
       <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-nav">
         <span></span><span></span><span></span>
@@ -893,6 +81,7 @@
         <ul>
           <li><a class="navlink active" href="#accueil">Accueil</a></li>
           <li><a class="navlink" href="#apropos">À propos</a></li>
+          <li><a class="navlink" href="#competences">Compétences</a></li>
           <li><a class="navlink" href="#projets">Projets</a></li>
           <li><a class="navlink" href="#contact">Contact</a></li>
         </ul>
@@ -902,39 +91,79 @@
 
   <!-- =========================
        🎥 HERO / AFFICHE D'OUVERTURE
-       Remplace le texte entre crochets.
        ========================= -->
   <section class="hero" id="accueil" aria-label="Accueil">
     <div class="hero-inner container">
-      <div class="kicker">Portfolio réalisateur</div>
-      <h1>Bonjour, je suis <span style="color:var(--accent)">Clément</span><br />Étudiant en réalisation à l’EICAR
+      <div class="kicker" data-animate="fade-up">Portfolio réalisateur</div>
+      <h1 data-animate="fade-up">
+        Bonjour, je suis <span class="gradient-text">Clément</span><br />
+        <span class="typed-text">Étudiant en réalisation à l'EICAR</span>
       </h1>
-      <p class="subtitle">Je raconte des histoires en images et en émotions. Mon travail explore la narration visuelle,
-        le rythme et la direction d’acteurs, et je suis également artiste et compositeur.</p>
-      <a class="cta" href="#projets" aria-label="Voir mes projets">🎬 Voir mes projets</a>
+      <p class="subtitle" data-animate="fade-up">
+        Je raconte des histoires en images et en émotions. Mon travail explore la narration visuelle,
+        le rythme et la direction d'acteurs, et je suis également artiste et compositeur.
+      </p>
+      <div class="hero-actions" data-animate="fade-up">
+        <a class="cta primary" href="#projets" aria-label="Voir mes projets">
+          <span class="icon">🎬</span> Voir mes projets
+        </a>
+        <a class="cta secondary" href="#apropos" aria-label="En savoir plus">
+          <span class="icon">👤</span> En savoir plus
+        </a>
+      </div>
+    </div>
+    
+    <!-- Particules animées -->
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
     </div>
   </section>
 
   <!-- =========================
        👤 À PROPOS
-       Remplace l'image (src) et le texte.
        ========================= -->
   <section class="container" id="apropos" aria-label="À propos">
     <div class="about">
-      <div class="panel">
-        <!-- 🖼️ PLACEHOLDER À REMPLACER PAR TON PORTRAIT -->
-        <img alt="portrait" class="portrait" loading="lazy" src="moi.png" />
+      <div class="panel" data-animate="fade-left">
+        <div class="portrait-container">
+          <img alt="Portrait de Clément, réalisateur" class="portrait" loading="lazy" src="moi.png" />
+          <div class="portrait-overlay"></div>
+        </div>
       </div>
-      <div class="panel">
+      <div class="panel" data-animate="fade-right">
         <h2>À propos</h2>
-        <p class="meta">Étudiant en bachelor réalisation à l’EICAR</p>
-        <p>Passionné par la mise en scène et la direction d’acteurs, je développe des projets courts qui explorent le
-          regard, le tempo et l’émotion. Je m’intéresse à la narration visuelle et au travail d’équipe sur le plateau.
-          Je m’intéresse aussi a la musique et au sound design.</p>
-        <p>Compétences clés : découpage, direction d’acteurs, collaboration avec chef op/son, gestion de tournage léger.
+        <p class="meta">Étudiant en bachelor réalisation à l'EICAR</p>
+        <p>
+          Passionné par la mise en scène et la direction d'acteurs, je développe des projets courts qui explorent le
+          regard, le tempo et l'émotion. Je m'intéresse à la narration visuelle et au travail d'équipe sur le plateau.
         </p>
-        <div class="actions" style="margin-top: .8rem">
-          <a class="btn" href="#contact">Me contacter</a>
+        <p>
+          Mon approche cinématographique s'enrichit de ma pratique musicale, créant des synergies entre son et image
+          pour des expériences audiovisuelles immersives.
+        </p>
+        
+        <!-- Stats -->
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Années d'études</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Projets réalisés</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">5+</div>
+            <div class="stat-label">Créations musicales</div>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top: 1.5rem">
+          <a class="btn secondary" href="#contact">Me contacter</a>
           <a class="btn primary" href="#projets">Filmographie</a>
         </div>
       </div>
@@ -942,50 +171,152 @@
   </section>
 
   <!-- =========================
+       🎯 COMPÉTENCES
+       ========================= -->
+  <section class="container" id="competences" aria-label="Compétences">
+    <div class="section-header" data-animate="fade-up">
+      <h2>Compétences</h2>
+      <p class="meta">Mes domaines d'expertise en constante évolution</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-category" data-animate="fade-up">
+        <div class="skill-icon">🎬</div>
+        <h3>Réalisation</h3>
+        <ul>
+          <li>Direction d'acteurs</li>
+          <li>Découpage technique</li>
+          <li>Mise en scène</li>
+          <li>Narration visuelle</li>
+        </ul>
+      </div>
+
+      <div class="skill-category" data-animate="fade-up">
+        <div class="skill-icon">📹</div>
+        <h3>Production</h3>
+        <ul>
+          <li>Gestion de tournage</li>
+          <li>Planification projet</li>
+          <li>Coordination équipe</li>
+          <li>Budget léger</li>
+        </ul>
+      </div>
+
+      <div class="skill-category" data-animate="fade-up">
+        <div class="skill-icon">🎵</div>
+        <h3>Audio</h3>
+        <ul>
+          <li>Composition musicale</li>
+          <li>Sound design</li>
+          <li>Mixage audio</li>
+          <li>Création d'ambiances</li>
+        </ul>
+      </div>
+
+      <div class="skill-category" data-animate="fade-up">
+        <div class="skill-icon">✂️</div>
+        <h3>Post-production</h3>
+        <ul>
+          <li>Montage vidéo</li>
+          <li>Étalonnage</li>
+          <li>VFX légers</li>
+          <li>Finalisation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
        🎞️ PROJETS / FILMOGRAPHIE
-       Remplace les cartes ci-dessous par tes projets (image, titre, synopsis, rôle, lien).
-       - Clique sur une carte pour ouvrir la modale.
        ========================= -->
   <section class="container projects" id="projets" aria-label="Projets">
-    <h2>Projets sélectionnés</h2>
-    <p class="meta">Quelques travaux (fictifs) — remplace par tes films</p>
+    <div class="section-header" data-animate="fade-up">
+      <h2>Projets sélectionnés</h2>
+      <p class="meta">Une sélection de mes travaux récents</p>
+    </div>
+
+    <!-- Filtres -->
+    <div class="project-filters" data-animate="fade-up">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="film">Films</button>
+      <button class="filter-btn" data-filter="music">Musique</button>
+      <button class="filter-btn" data-filter="experimental">Expérimental</button>
+    </div>
 
     <div class="grid" id="cards">
-      <!-- 📌 COPIE/EDITE ce bloc .card pour ajouter un projet -->
-      <article class="card" data-title="DreamScape" data-role="Artiste / Interprète"
-        data-synopsis="DreamScape est directement inspiré du groupe Tame Impala, j'ai essayer de réaliser un son avec la même ambiance par pure passion !"
-        data-link="https://soundcloud.com/p1cs0u/dreamscape" aria-label="Ouvrir les détails du projet DreamScape">
-        <img class="thumb" alt="Affiche du projet DreamScape, musique psychédélique" loading="lazy" src="P1CS0U.png" />
-        <div class="body">
+      <article class="card" data-category="music" data-title="DreamScape" data-role="Artiste / Interprète"
+        data-synopsis="DreamScape est directement inspiré du groupe Tame Impala. J'ai essayé de réaliser un son avec la même ambiance psychédélique par pure passion pour ce genre musical."
+        data-link="https://soundcloud.com/p1cs0u/dreamscape" 
+        data-date="2024" 
+        data-animate="fade-up">
+        <div class="card-image">
+          <img class="thumb" alt="Affiche du projet DreamScape, musique psychédélique" loading="lazy" src="P1CS0U.png" />
+          <div class="card-overlay">
+            <span class="category-tag music">Musique</span>
+            <button class="play-btn" aria-label="Lire DreamScape">▶</button>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-meta">
+            <span class="date">2024</span>
+            <span class="duration">3:42</span>
+          </div>
           <h3>DreamScape</h3>
-          <p>Musique — psychédélique</p>
-          <button class="btn small more-btn">En savoir plus</button>
+          <p>Création musicale psychédélique</p>
+          <button class="btn small more-btn">Découvrir</button>
         </div>
       </article>
 
-
-      <article class="card" data-title="Silence 24" data-role="Réalisateur / Co-scénariste"
-        data-synopsis="Un huis clos sonore où le silence devient personnage principal."
-        data-link="https://youtube.com/">
-        <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="placeholder.png" />
-        <div class="body">
+      <article class="card" data-category="film" data-title="Silence 24" data-role="Réalisateur / Co-scénariste"
+        data-synopsis="Un huis clos sonore où le silence devient personnage principal. Exploration de l'isolement moderne à travers une approche minimaliste du cinéma."
+        data-link="https://youtube.com/" 
+        data-date="2024" 
+        data-animate="fade-up">
+        <div class="card-image">
+          <img class="thumb" alt="Affiche du court-métrage Silence 24" loading="lazy" src="placeholder.png" />
+          <div class="card-overlay">
+            <span class="category-tag film">Court-métrage</span>
+            <button class="play-btn" aria-label="Voir Silence 24">▶</button>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-meta">
+            <span class="date">2024</span>
+            <span class="duration">12 min</span>
+          </div>
           <h3>Silence 24</h3>
-          <p>Court-métrage — Huis clos</p>
-          <button class="btn small more-btn">En savoir plus</button>
+          <p>Huis clos psychologique</p>
+          <button class="btn small more-btn">Découvrir</button>
         </div>
       </article>
 
-      <article class="card" data-title="Nocturne Bleu" data-role="Assistant réal"
-        data-synopsis="Errance nocturne d’un personnage à la recherche d’un son perdu." data-link="">
-        <img class="thumb" alt="Affiche du projet huis clos sonore" loading="lazy" src="placeholder.png" />
-        <div class="body">
+      <article class="card" data-category="experimental" data-title="Nocturne Bleu" data-role="Assistant réal"
+        data-synopsis="Errance nocturne d'un personnage à la recherche d'un son perdu. Expérimentation sur la relation entre l'image et le son dans l'espace urbain nocturne."
+        data-link="" 
+        data-date="2023" 
+        data-animate="fade-up">
+        <div class="card-image">
+          <img class="thumb" alt="Affiche du projet expérimental Nocturne Bleu" loading="lazy" src="placeholder.png" />
+          <div class="card-overlay">
+            <span class="category-tag experimental">Expérimental</span>
+            <button class="play-btn" aria-label="Voir Nocturne Bleu">▶</button>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-meta">
+            <span class="date">2023</span>
+            <span class="duration">8 min</span>
+          </div>
           <h3>Nocturne Bleu</h3>
-          <p>Court-métrage — Errance</p>
-          <button class="btn small more-btn">En savoir plus</button>
+          <p>Court-métrage expérimental</p>
+          <button class="btn small more-btn">Découvrir</button>
         </div>
       </article>
+    </div>
 
-      <!-- ➕ Ajoute d’autres .card au besoin -->
+    <!-- Bouton voir plus -->
+    <div class="text-center" style="margin-top: 2rem;" data-animate="fade-up">
+      <button class="btn outline" id="loadMore">Voir plus de projets</button>
     </div>
   </section>
 
@@ -993,306 +324,193 @@
        ✉️ CONTACT
        ========================= -->
   <section class="container contact" id="contact" aria-label="Contact">
-    <div class="about" style="align-items: stretch;">
-      <!-- Texte d’introduction -->
-      <div class="panel" style="display:flex;flex-direction:column;justify-content:center;">
-        <h2>Contact</h2>
-        <p class="meta">Envie de collaborer, d’échanger sur un projet ou simplement de discuter cinéma ?</p>
-        <p>Écrivez-moi et je vous répondrai rapidement. Que ce soit pour une réalisation, une collaboration musicale ou
-          un projet créatif, je suis toujours ouvert aux nouvelles idées.</p>
+    <div class="section-header" data-animate="fade-up">
+      <h2>Travaillons ensemble</h2>
+      <p class="meta">Prêt à donner vie à vos idées créatives</p>
+    </div>
+
+    <div class="contact-content">
+      <div class="contact-info" data-animate="fade-left">
+        <div class="contact-card">
+          <h3>Envie de collaborer ?</h3>
+          <p>
+            Que ce soit pour une réalisation, une collaboration musicale ou un projet créatif, 
+            je suis toujours ouvert aux nouvelles idées et aux défis artistiques.
+          </p>
+          
+          <div class="contact-methods">
+            <div class="contact-method">
+              <span class="contact-icon">📧</span>
+              <div>
+                <strong>Email</strong>
+                <p>clement@example.com</p>
+              </div>
+            </div>
+            <div class="contact-method">
+              <span class="contact-icon">📱</span>
+              <div>
+                <strong>Téléphone</strong>
+                <p>+33 6 XX XX XX XX</p>
+              </div>
+            </div>
+            <div class="contact-method">
+              <span class="contact-icon">📍</span>
+              <div>
+                <strong>Localisation</strong>
+                <p>Paris, France</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Formulaire -->
-      <div class="panel">
+      <div class="contact-form-container" data-animate="fade-right">
         <form id="contactForm" name="contact" method="POST" data-netlify="true" aria-label="Formulaire de contact">
-          <!-- champ caché obligatoire pour Netlify -->
           <input type="hidden" name="form-name" value="contact" />
 
-          <div>
-            <label for="name">Nom</label>
-            <div style="position:relative;">
-              <span style="position:absolute;left:12px;top:46%;transform:translateY(-50%);opacity:.6;">👤</span>
-              <input id="name" name="name" type="text" placeholder="Votre nom" required style="padding-left:2.2rem;" />
+          <div class="form-group">
+            <label for="name">Nom complet</label>
+            <div class="input-group">
+              <span class="input-icon">👤</span>
+              <input id="name" name="name" type="text" placeholder="Votre nom et prénom" required />
             </div>
           </div>
 
-          <div>
-            <label for="email">Email</label>
-            <div style="position:relative;">
-              <span style="position:absolute;left:12px;top:48%;transform:translateY(-50%);opacity:.6;">📧</span>
-              <input id="email" name="email" type="email" placeholder="votre@email.com" required
-                style="padding-left:2.2rem;" />
+          <div class="form-group">
+            <label for="email">Adresse email</label>
+            <div class="input-group">
+              <span class="input-icon">📧</span>
+              <input id="email" name="email" type="email" placeholder="votre@email.com" required />
             </div>
           </div>
 
-          <div>
+          <div class="form-group">
+            <label for="subject">Sujet</label>
+            <div class="input-group">
+              <span class="input-icon">📝</span>
+              <select id="subject" name="subject" required>
+                <option value="">Choisissez un sujet</option>
+                <option value="collaboration">Collaboration</option>
+                <option value="projet">Nouveau projet</option>
+                <option value="stage">Demande de stage</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label for="message">Message</label>
-            <div style="position:relative;">
-              <span style="position:absolute;left:12px;top:9px;opacity:.6;">💬</span>
-              <textarea id="message" name="message" placeholder="Votre message…" required
-                style="padding-left:2.2rem;"></textarea>
+            <div class="input-group">
+              <span class="input-icon">💬</span>
+              <textarea id="message" name="message" placeholder="Décrivez votre projet ou votre demande..." required rows="5"></textarea>
             </div>
           </div>
 
-          <button type="submit" class="btn primary">✉️ Envoyer le message</button>
+          <button type="submit" class="btn primary full-width" id="submitBtn">
+            <span class="btn-text">Envoyer le message</span>
+            <span class="btn-loading" style="display: none;">Envoi en cours...</span>
+          </button>
 
-          <!-- message de confirmation (affiché après redirection ou JS custom) -->
-          <p id="formMessage" class="meta" style="margin-top:.6rem;color:var(--accent);display:none;">
-            Merci ! Votre message a bien été envoyé.
-          </p>
+          <div id="formMessage" class="form-message" style="display: none;"></div>
         </form>
       </div>
+    </div>
   </section>
-
 
   <!-- =========================
        ⬛ FOOTER
-       Remplace les liens par tes réseaux.
        ========================= -->
   <footer>
-    <div class="container"
-      style="display:flex; justify-content: space-between; gap:1rem; align-items:center; flex-wrap:wrap;">
-      <div class="social" aria-label="Réseaux sociaux">
-        <a class="chip soundcloud" href="https://soundcloud.com/p1cs0u" target="_blank" rel="noreferrer noopener">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M18.5 12.5a4.5 4.5 0 00-4.5-4.5 4.49 4.49 0 00-1.65.32 6 6 0 00-11.35 3.33 4.5 4.5 0 000 9h16a4.5 4.5 0 000-9z" />
-          </svg>
-          SoundCloud
-        </a>
-
-        <a class="chip youtube" href="https://youtube.com/" target="_blank" rel="noreferrer noopener">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M21.8 8s-.2-1.6-.8-2.3c-.8-.9-1.7-.9-2.1-1C16.3 4 12 4 12 4h0s-4.3 0-6.9.7c-.4.1-1.3.1-2.1 1-.6.7-.8 2.3-.8 2.3S2 9.8 2 11.5v1c0 1.7.2 3.5.2 3.5s.2 1.6.8 2.3c.8.9 1.9.9 2.4 1C7.7 20 12 20 12 20s4.3 0 6.9-.7c.4-.1 1.3-.1 2.1-1 .6-.7.8-2.3.8-2.3s.2-1.8.2-3.5v-1c0-1.7-.2-3.5-.2-3.5zM10 15V9l5 3-5 3z" />
-          </svg>
-          YouTube
-        </a>
-
-        <a class="chip discord" href="https://discord.gg/AwFQXvvAU5" target="_blank" rel="noreferrer noopener">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M20.317 4.369A19.791 19.791 0 0016.885 3c-.208.375-.45.88-.617 1.28a18.232 18.232 0 00-5.536 0A12.58 12.58 0 0010.115 3c-.494.094-2.308.53-3.432 1.369-2.21 3.182-2.81 6.294-2.504 9.38a19.73 19.73 0 005.996 3.03c.48-.66.91-1.36 1.29-2.1-.71-.27-1.39-.61-2.02-1.02.17-.12.34-.25.5-.38 1.9.88 3.95.88 5.85 0 .17.13.33.26.5.38-.63.41-1.31.75-2.02 1.02.38.74.81 1.44 1.29 2.1a19.79 19.79 0 005.997-3.03c.37-3.57-.64-6.64-2.51-9.38zM9.5 13.25c-.73 0-1.33-.65-1.33-1.45s.59-1.45 1.33-1.45c.73 0 1.33.65 1.33 1.45s-.59 1.45-1.33 1.45zm5 0c-.73 0-1.33-.65-1.33-1.45s.59-1.45 1.33-1.45 1.33.65 1.33 1.45-.59 1.45-1.33 1.45z" />
-          </svg>
-          Discord
-        </a>
-
-        <a class="chip instagram" href="https://www.instagram.com/clement.chrp_" target="_blank"
-          rel="noreferrer noopener">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2a1 1 0 110 2 1 1 0 010-2zm-4.25 1.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.5a4 4 0 100 8 4 4 0 000-8z" />
-          </svg>
-          Instagram
-        </a>
-      </div>
-      <div>© <span id="year"></span> — <strong>Clement</strong> • Portfolio Réalisateur</div>
-    </div>
-  </footer>
-
-  <!-- =========================
-       🧠 SCRIPTS — interactions
-       ========================= -->
-  <script>
-    /*
-     * ✅ GUIDE DE PERSONNALISATION RAPIDE
-     * 1) Remplace [Ton Nom] dans le header, le hero et le footer
-     * 2) Remplace l'image du portrait (src de l'img data:… ➜ par ton fichier local ex: images/portrait.jpg)
-     * 3) Remplace les cartes projets (titre, synopsis, rôle, lien)
-     * 4) Modifie la palette dans :root si tu veux (or ➜ rouge cinéma, bleu nuit, etc.)
-     */
-
-    document.addEventListener("DOMContentLoaded", () => {
-
-      // --- Animation IntersectionObserver ---
-      const animEls = document.querySelectorAll('[data-animate]');
-      if (animEls.length > 0) {
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-          });
-        }, { threshold: 0.2 });
-        animEls.forEach(el => observer.observe(el));
-      }
-
-      // --- Burger menu (mobile) ---
-      const burgerBtn = document.querySelector('.burger');
-      const primaryNav = document.getElementById('primary-nav');
-      if (burgerBtn && primaryNav) {
-        const setState = (open) => {
-          primaryNav.setAttribute('data-state', open ? 'open' : 'closed');
-          burgerBtn.setAttribute('aria-expanded', String(open));
-        };
-        burgerBtn.addEventListener('click', () => {
-          const open = primaryNav.getAttribute('data-state') !== 'open';
-          setState(open);
-          if (open) {
-            const firstLink = primaryNav.querySelector('a');
-            firstLink?.focus();
-          }
-        });
-        primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setState(false)));
-        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setState(false); });
-      }
-
-      // --- Année automatique dans le footer ---
-      const yearEl = document.getElementById('year');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-      // --- Scroll tracking pour effet halo léger du hero & highlight nav ---
-      const links = Array.from(document.querySelectorAll('.navlink'));
-      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-
-      const onScroll = () => {
-        const y = window.scrollY || 0;
-        document.documentElement.style.setProperty('--scroll', y);
-        highlightNav();
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-
-      function highlightNav() {
-        let idx = 0;
-        const fromTop = window.scrollY + window.innerHeight / 3;
-        for (let i = 0; i < sections.length; i++) {
-          if (sections[i].offsetTop <= fromTop) idx = i;
-        }
-        links.forEach(l => l.classList.remove('active'));
-        links[idx]?.classList.add('active');
-      }
-      highlightNav();
-
-      // --- Modales projets ---
-      const backdrop = document.createElement('div');
-      backdrop.className = 'modal-backdrop';
-      backdrop.setAttribute('role', 'dialog');
-      backdrop.setAttribute('aria-modal', 'true');
-      document.body.appendChild(backdrop);
-
-      backdrop.addEventListener('click', (e) => {
-        if (e.target === backdrop) closeModal();
-      });
-
-      function openModal({ title, role, synopsis, image, link }) {
-        backdrop.innerHTML = `
-    <div class="modal" role="document">
-      <div class="modal-head">
-        <strong>${title}</strong>
-        <button class="close-btn" aria-label="Fermer">×</button>
-      </div>
-      <div class="modal-body">
-        <div>
-          <img alt="Affiche du projet" src="${image}" />
+    <div class="container footer-content">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <h3>Clément</h3>
+          <p>Réalisateur & Créateur</p>
+          <p class="footer-tagline">Raconter des histoires, créer des émotions</p>
         </div>
-        <div>
-          <p>${synopsis || ''}</p>
-          <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
-          <div class="actions" style="margin-top: .8rem">
-            ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
+
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="#accueil">Accueil</a></li>
+              <li><a href="#apropos">À propos</a></li>
+              <li><a href="#projets">Projets</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Projets</h4>
+            <ul>
+              <li><a href="#" data-filter="film">Courts-métrages</a></li>
+              <li><a href="#" data-filter="music">Créations musicales</a></li>
+              <li><a href="#" data-filter="experimental">Expérimental</a></li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>`;
 
-        // Ajouter les listeners pour fermer la modale
-        backdrop.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', closeModal));
+      <div class="footer-social">
+        <div class="social" aria-label="Réseaux sociaux">
+          <a class="chip soundcloud" href="https://soundcloud.com/p1cs0u" target="_blank" rel="noreferrer noopener" aria-label="Suivre sur SoundCloud">
+            <svg viewBox="0 0 24 24">
+              <path d="M18.5 12.5a4.5 4.5 0 00-4.5-4.5 4.49 4.49 0 00-1.65.32 6 6 0 00-11.35 3.33 4.5 4.5 0 000 9h16a4.5 4.5 0 000-9z" />
+            </svg>
+            SoundCloud
+          </a>
 
-        backdrop.setAttribute('open', '');
-        document.body.style.overflow = 'hidden';
-      }
+          <a class="chip youtube" href="https://youtube.com/" target="_blank" rel="noreferrer noopener" aria-label="Voir sur YouTube">
+            <svg viewBox="0 0 24 24">
+              <path d="M21.8 8s-.2-1.6-.8-2.3c-.8-.9-1.7-.9-2.1-1C16.3 4 12 4 12 4h0s-4.3 0-6.9.7c-.4.1-1.3.1-2.1 1-.6.7-.8 2.3-.8 2.3S2 9.8 2 11.5v1c0 1.7.2 3.5.2 3.5s.2 1.6.8 2.3c.8.9 1.9.9 2.4 1C7.7 20 12 20 12 20s4.3 0 6.9-.7c.4-.1 1.3-.1 2.1-1 .6-.7.8-2.3.8-2.3s.2-1.8.2-3.5v-1c0-1.7-.2-3.5-.2-3.5zM10 15V9l5 3-5 3z" />
+            </svg>
+            YouTube
+          </a>
 
+          <a class="chip discord" href="https://discord.gg/AwFQXvvAU5" target="_blank" rel="noreferrer noopener" aria-label="Rejoindre sur Discord">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.317 4.369A19.791 19.791 0 0016.885 3c-.208.375-.45.88-.617 1.28a18.232 18.232 0 00-5.536 0A12.58 12.58 0 0010.115 3c-.494.094-2.308.53-3.432 1.369-2.21 3.182-2.81 6.294-2.504 9.38a19.73 19.73 0 005.996 3.03c.48-.66.91-1.36 1.29-2.1-.71-.27-1.39-.61-2.02-1.02.17-.12.34-.25.5-.38 1.9.88 3.95.88 5.85 0 .17.13.33.26.5.38-.63.41-1.31.75-2.02 1.02.38.74.81 1.44 1.29 2.1a19.79 19.79 0 005.997-3.03c.37-3.57-.64-6.64-2.51-9.38zM9.5 13.25c-.73 0-1.33-.65-1.33-1.45s.59-1.45 1.33-1.45c.73 0 1.33.65 1.33 1.45s-.59 1.45-1.33 1.45zm5 0c-.73 0-1.33-.65-1.33-1.45s.59-1.45 1.33-1.45 1.33.65 1.33 1.45-.59 1.45-1.33 1.45z" />
+            </svg>
+            Discord
+          </a>
 
-      function closeModal() {
-        backdrop.removeAttribute('open');
-        backdrop.innerHTML = '';
-        document.body.style.overflow = '';
-      }
+          <a class="chip instagram" href="https://www.instagram.com/clement.chrp_" target="_blank" rel="noreferrer noopener" aria-label="Suivre sur Instagram">
+            <svg viewBox="0 0 24 24">
+              <path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2a1 1 0 110 2 1 1 0 010-2zm-4.25 1.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.5a4 4 0 100 8 4 4 0 000-8z" />
+            </svg>
+            Instagram
+          </a>
+        </div>
+      </div>
 
-      const cardsContainer = document.getElementById('cards');
-      if (cardsContainer) {
-        cardsContainer.addEventListener('click', (e) => {
-          const card = e.target.closest('.card');
-          if (!card) return;
-          if (e.target.classList.contains('more-btn') || e.target.closest('.body')) {
-            const title = card.dataset.title || 'Projet';
-            const role = card.dataset.role || '';
-            const synopsis = card.dataset.synopsis || '';
-            const link = card.dataset.link || '';
-            const img = card.querySelector('img')?.getAttribute('src');
-            openModal({ title, role, synopsis, image: img, link });
-          }
-        });
-      }
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          © <span id="year"></span> — <strong>Clément</strong> • Portfolio Réalisateur
+        </div>
+        <div class="footer-links-bottom">
+          <a href="/mentions-legales">Mentions légales</a>
+          <a href="/confidentialite">Confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-      // --- Formulaire contact ---
-      const form = document.getElementById("contactForm");
-      const msg = document.getElementById("formMessage");
-      if (form) {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const data = new FormData(form);
-          const name = (data.get("name") || "").trim();
-          try {
-            await fetch("/", {
-              method: "POST",
-              body: new URLSearchParams(data).toString(),
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            });
-            form.reset();
-            if (msg) {
-              msg.textContent = `Merci${name ? `, ${name}` : ""} ! Votre message a bien été envoyé.`;
-              msg.style.display = "block";
-            }
-          } catch (err) {
-            console.error("Erreur lors de l’envoi :", err);
-            if (msg) {
-              msg.textContent = "⚠️ Une erreur est survenue, merci de réessayer.";
-              msg.style.display = "block";
-            }
-          }
-        });
-      }
+  <!-- Back to top button -->
+  <button id="toTop" aria-label="Retour en haut" title="Retour en haut">
+    <span>↑</span>
+  </button>
 
-      // --- Lazy-load images ---
-      document.querySelectorAll('img[src]').forEach(img => {
-        if ((img.getAttribute('src') || '').trim() !== '') {
-          img.loading = 'lazy';
-          img.decoding = 'async';
-        }
-      });
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader">
+      <div class="loader-inner">
+        <div class="loader-circle"></div>
+        <div class="loader-text">Chargement...</div>
+      </div>
+    </div>
+  </div>
 
-      // --- Scroll to top button ---
-      const toTopBtn = document.getElementById('toTop');
-
-      if (toTopBtn) {
-        const triggerBounce = () => {
-          toTopBtn.classList.add('bounce');
-          // Retire la classe après la fin de l'animation pour pouvoir la rejouer
-          setTimeout(() => toTopBtn.classList.remove('bounce'), 600);
-        };
-
-        window.addEventListener('scroll', () => {
-          if (window.scrollY > 400) {
-            if (!toTopBtn.classList.contains('show')) {
-              toTopBtn.classList.add('show');
-              triggerBounce(); // Déclenche le rebond au moment où le bouton apparaît
-            }
-          } else {
-            toTopBtn.classList.remove('show');
-          }
-        });
-
-        toTopBtn.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          triggerBounce(); // Déclenche le rebond au clic
-        });
-      }
-
-    });
-
-  </script>
-
-  <button id="toTop" aria-label="Retour en haut">↑</button>
-
+  <script src="script.js"></script>
 </body>
 
 </html>
