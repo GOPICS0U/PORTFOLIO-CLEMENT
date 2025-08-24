@@ -3,19 +3,34 @@
 
 <head>
   <meta charset="utf-8" />
+  <meta name="theme-color" content="#0e0e10">
+  <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="réalisateur, film, court-métrage, portfolio, EICAR, Clément">
   <meta property="og:title" content="Portfolio Réalisateur — Clément" />
   <meta property="og:description" content="Découvrez mes projets de réalisation et ma filmographie." />
   <meta property="og:image" content="preview.png" />
   <meta property="og:type" content="website" />
 
+
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Portfolio Réalisateur — Clément" />
   <meta name="twitter:description" content="Découvrez mes projets de réalisation et ma filmographie." />
   <meta name="twitter:image" content="preview.png" />
+  <meta property="og:url" content="https://portfolio-realisation.netlify.app/">
 
   <title>Portfolio Réalisateur — Clément</title>
   <link rel="icon" type="image/ico" href="favicon.ico">
+  <link rel="canonical" href="https://portfolio-realisation.netlify.app/">
+  <link rel="preload" as="image" href="moi.png">
+  <link rel="preload" as="image" href="preview.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preload" as="image" href="hero.jpg">
+  <link rel="preload" as="font" href="/fonts/Roboto.woff2" type="font/woff2" crossorigin>
   <meta name="description"
     content="Portfolio de réalisateur — Étudiant en bachelor réalisation à l’EICAR. Projets, filmographie, contact." />
   <style>
@@ -140,8 +155,9 @@
       top: 0;
       z-index: 40;
       backdrop-filter: blur(8px);
-      background: color-mix(in srgb, var(--bg) 85%, transparent);
-      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      background: rgba(14, 14, 16, 0.85);
+      /* remplace color-mix pour compatibilité */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .nav {
@@ -149,12 +165,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: .75rem 0;
+      padding: 0.75rem 0;
     }
 
     .brand {
       font-weight: 700;
-      letter-spacing: .04em;
+      letter-spacing: 0.04em;
     }
 
     .brand .dot {
@@ -164,23 +180,27 @@
     nav ul {
       list-style: none;
       display: flex;
-      gap: .75rem;
+      gap: 0.75rem;
       padding: 0;
       margin: 0;
     }
 
     nav a {
-      padding: .55rem .9rem;
+      padding: 0.55rem 0.9rem;
       border-radius: 999px;
       font-weight: 600;
-      font-size: .95rem;
+      font-size: 0.95rem;
       color: var(--muted);
-      transition: background var(--duration) var(--ease), color var(--duration) var(--ease), transform .2s;
+      transition:
+        background var(--duration) var(--ease),
+        color var(--duration) var(--ease),
+        transform 0.2s;
+      position: relative;
     }
 
     nav a:hover {
       color: var(--fg);
-      background: rgba(255, 255, 255, .06);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     nav a.active::after {
@@ -188,15 +208,14 @@
       display: block;
       height: 3px;
       background: var(--accent);
-      width: 0;
-      transition: width 0.4s ease;
-    }
-
-    nav a.active::after {
       width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-radius: 3px;
+      /* arrondit les coins de la barre */
     }
 
-    /* Bouton burger (desktop: caché) */
     .burger {
       display: none;
       position: relative;
@@ -230,7 +249,6 @@
       top: 25px;
     }
 
-    /* Animation en croix */
     .burger[aria-expanded="true"] span:nth-child(1) {
       transform: translateY(7px) rotate(45deg);
     }
@@ -258,27 +276,27 @@
         top: 100%;
         right: 0;
         background: var(--bg-2);
-        border: 1px solid rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
         width: min(260px, 92vw);
-        padding: .4rem;
-        transition: opacity .25s var(--ease), transform .25s var(--ease);
+        padding: 0.4rem;
+        transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+        overflow: hidden;
       }
 
       #primary-nav ul {
         flex-direction: column;
-        gap: .25rem;
+        gap: 0.25rem;
         margin: 0;
         padding: 0;
       }
 
       #primary-nav a {
         display: block;
-        padding: .8rem 1rem;
+        padding: 0.8rem 1rem;
       }
 
-      /* états */
       #primary-nav[data-state="closed"] {
         opacity: 0;
         transform: translateY(-8px);
@@ -291,7 +309,6 @@
         pointer-events: auto;
       }
     }
-
 
     /* =========================
        🎥 HERO (affiche de film)
@@ -762,6 +779,18 @@
       }
     }
 
+    @media (hover: none) {
+      .btn:hover {
+        transform: none;
+        filter: none;
+      }
+
+      .card:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+
     /* Animation de rebond + déformation */
     @keyframes bounceUp {
       0% {
@@ -1090,6 +1119,10 @@
         burgerBtn.addEventListener('click', () => {
           const open = primaryNav.getAttribute('data-state') !== 'open';
           setState(open);
+          if (open) {
+            const firstLink = primaryNav.querySelector('a');
+            firstLink?.focus();
+          }
         });
         primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setState(false)));
         window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setState(false); });
@@ -1148,7 +1181,6 @@
           <p class="meta-tag">Rôle : <strong>${role || '—'}</strong></p>
           <div class="actions" style="margin-top: .8rem">
             ${link ? `<a class="btn primary" href="${link}" target="_blank" rel="noreferrer noopener">Voir la vidéo</a>` : ''}
-            <button class="btn close-btn">Fermer</button>
           </div>
         </div>
       </div>
